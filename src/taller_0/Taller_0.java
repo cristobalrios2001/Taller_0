@@ -6,7 +6,6 @@
 package taller_0;
 
 import java.io.File;
-import ucn.*;
 import java.util.Scanner;
 import java.io.IOException;
 
@@ -40,7 +39,7 @@ public class Taller_0
         boolean [][] funcionesMañana = new boolean [45][3];
         boolean [][] funcionesTarde = new boolean [45][3];
         
-        int cantPeliculas = 0;
+        int cantPeliculas = 0;//lecturaPeliculas()
         
                      //datos entradas
         String [] rutsEntradas = new String [350];
@@ -200,8 +199,112 @@ public class Taller_0
         
         
     }
+    public static void devolucionEntrada(String rut, String [] rutsEntradas, int [] cantEntradas, String [] peliculaClientes,String [] horarioEntradas, int [] salaComprada, String [][] matrizEntradaCliente, int cantCompraClientes, String[]ruts,int cantClientes,int[]saldos){
+        int pos=buscarPosCliente(rut,rutsEntradas,cantCompraClientes);
+        int pos2=buscarPosCliente(rut,ruts,cantClientes);
+        //obtenerEntradasUsuario();
+        //opDevolucion();
+    }
     
-    
-    
-    
+    public static void opcionMain(int cantPeliculas, String[]nombrePeliculas,int [] recaudacionMañana,int [] recaudacionTarde,int [] recaudacionTotal, String [] ruts, int cantClientes, String[] nombres, String[] apellidos, int[] saldos, int []cantEntradas, String[] peliculaClientes, String[] horarioEntradas,String[] rutsEntradas,String[][]matrizEntradaCliente){
+        Scanner sc = new Scanner(System.in);
+        
+        System.out.println("Has ingresado al menu de administrador");
+        System.out.println("Ingrese una opcion: (Taquilla(1)-Informacion por cliente(2)");
+        int opcion=sc.nextInt();
+        
+        while(opcion!=1 && opcion!=2){
+            System.out.println("Ingrese una opcion correcta: Taquilla(1)-Informacion por cliente(2)");
+            opcion=sc.nextInt();
+        }
+        if (opcion==1){
+            obtenerRecaudacion(cantPeliculas,nombrePeliculas,recaudacionMañana,recaudacionTarde,recaudacionTotal);
+            }
+                               
+        if (opcion==2){
+            obtenerInformacionUsuario( ruts, cantClientes, nombres, apellidos, saldos, cantEntradas, peliculaClientes, horarioEntradas, rutsEntradas,matrizEntradaCliente);
+        }
+        
+    }
+
+    public static void obtenerRecaudacion(int cantPeliculas, String[]nombrePeliculas,int [] recaudacionMañana,int [] recaudacionTarde,int [] recaudacionTotal) {
+        for(int i=0;i<cantPeliculas;i++){
+            int total=0;
+            total=recaudacionMañana[i]+recaudacionTarde[i];
+            System.out.println(nombrePeliculas[i]);
+            System.out.println("La recaudacion total por la pelicula: ´"+nombrePeliculas[i]+"´ es de: "+recaudacionTotal[i]+" pesos");
+            System.out.println("El monto recaudado a lo largo del dia es de: "+total+" pesos");
+            System.out.println("El monto recaudado en el horario de mañana es de: "+recaudacionMañana[i]+" pesos");
+            System.out.println("El monto recaudado en el horario de tarde es de: "+recaudacionTarde[i]+" pesos");
+        }
+    }
+
+    public static void obtenerInformacionUsuario(String [] ruts, int cantClientes, String[] nombres, String[] apellidos, int[] saldos, int []cantEntradas, String[] peliculaClientes, String[] horarioEntradas, String[] rutsEntradas,String[][]matrizEntradaCliente, int cantCompraClientes) {
+        
+        int rut=0;
+        Scanner sc=new Scanner(System.in);
+        System.out.println("Ingrese el rut a buscar; ");
+        String rutBuscado=sc.nextLine();
+        int pos=buscarPosCliente(rutBuscado,ruts,cantClientes);
+        while(pos==-1){
+            System.out.println("Ingrese un rut correcto ");
+            rutBuscado=sc.nextLine();
+            pos=buscarPosCliente(rutBuscado,ruts,cantClientes);
+        }int pos2=buscarPosCliente(rutBuscado,rutsEntradas,cantCompraClientes);
+        System.out.println(nombres[pos]+" "+apellidos[pos]+" con un saldo de: "+saldos[pos]+" pesos");
+        System.out.println("Las entradas que ha comprado este clientes es de: "+cantEntradas[pos2]);
+        System.out.println("La pelicula comprada fue: "+peliculaClientes[pos2]+" en el horario de: "+horarioEntradas[pos2]);
+        for (int i = 0; i < cantCompraClientes; i++) {
+            String linea=matrizEntradaCliente[pos2][i];
+            String[]partes=linea.split(",");
+            System.out.println("Asiento: "+partes[0]+partes[1]);
+            
+        }
+          
+    }
+
+    public static int buscarPosCliente(String rutBuscado, String [] ruts, int cantClientes) {
+        int pos=0;
+        while(pos<=cantClientes-1 && !rutBuscado.equals(ruts[pos])){
+                    pos++;
+                }
+        if(pos == cantClientes){
+            return -1;
+         }
+        else{
+            return pos;
+        }
+    }
+
+    public static void obtenerEntradasUsuario(String[]peliculaClientes,int cantCompraClientes,int pos,String[]peliculaCliente,String[]horarioEntradas, int[]salaComprada, String [][] matrizEntradaCliente) {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Las entradas a comprar son las siguientes: ");
+        for (int i = 0; i < 10; i++) {
+            String linea=matrizEntradaCliente[pos][i];
+            String []partes=linea.split(",");
+             System.out.println(peliculaCliente[pos]+" en el horario de: "+ horarioEntradas[pos]+"en la sala n° "+salaComprada[pos]+" en el asiento: "+partes[0]+partes[1]);
+        }
+        
+        System.out.println("Ingrese la pelicula a reembolsar");
+        String pelicula=sc.nextLine();
+        
+        
+        
+    }
+
+    public static void opDevolucion(int []cantEntradas,int pos,int pos2, int[]saldos) {
+        Scanner sc = new Scanner(System.in);
+        
+        System.out.println("Cantidad de entradas a reembolsar: ");
+        int cant=sc.nextInt();
+        if (cantEntradas[pos]>1){
+            System.out.println("Asientos a elminar: ");
+            
+            //saldos[pos2]=0.8*valorEntrada*canEntradas;
+        }
+        else{
+            //saldos[pos2]=0.8*valorEntrada;
+        }
+    }
+        
 }
