@@ -200,13 +200,13 @@ public class Taller_0
         
     }
     public static void devolucionEntrada(String rut, String [] rutsEntradas, int [] cantEntradas, String [] peliculaClientes,String [] horarioEntradas, int [] salaComprada, String [][] matrizEntradaCliente, int cantCompraClientes, String[]ruts,int cantClientes,int[]saldos){
-        int pos=buscarPosCliente(rut,rutsEntradas,cantCompraClientes);
-        int pos2=buscarPosCliente(rut,ruts,cantClientes);
+        int pos=buscarPossCliente(rut,rutsEntradas,cantCompraClientes);
+        int pos2=buscarPossCliente(rut,ruts,cantClientes);
         //obtenerEntradasUsuario();
         //opDevolucion();
     }
     
-    public static void opcionMain(int cantPeliculas, String[]nombrePeliculas,int [] recaudacionMañana,int [] recaudacionTarde,int [] recaudacionTotal, String [] ruts, int cantClientes, String[] nombres, String[] apellidos, int[] saldos, int []cantEntradas, String[] peliculaClientes, String[] horarioEntradas,String[] rutsEntradas,String[][]matrizEntradaCliente){
+    public static void opcionMain(int cantPeliculas, String[]nombrePeliculas,int [] recaudacionMañana,int [] recaudacionTarde,int [] recaudacionTotal, String [] ruts, int cantClientes, String[] nombres, String[] apellidos, int[] saldos, int []cantEntradas, String[] peliculaClientes, String[] horarioEntradas,String[] rutsEntradas,String[][]matrizEntradaCliente, int cantCompraClientes){
         Scanner sc = new Scanner(System.in);
         
         System.out.println("Has ingresado al menu de administrador");
@@ -222,7 +222,7 @@ public class Taller_0
             }
                                
         if (opcion==2){
-           obtenerInformacionUsuario();
+           obtenerInformacionUsuario(ruts, cantClientes, nombres, apellidos, saldos, cantEntradas,peliculaClientes,horarioEntradas,rutsEntradas,matrizEntradaCliente,cantCompraClientes);
         }
         
     }
@@ -245,12 +245,12 @@ public class Taller_0
         Scanner sc=new Scanner(System.in);
         System.out.println("Ingrese el rut a buscar; ");
         String rutBuscado=sc.nextLine();
-        int pos=buscarPosCliente(rutBuscado,ruts,cantClientes);
+        int pos=buscarPossCliente(rutBuscado,ruts,cantClientes);
         while(pos==-1){
             System.out.println("Ingrese un rut correcto ");
             rutBuscado=sc.nextLine();
-            pos=buscarPosCliente(rutBuscado,ruts,cantClientes);
-        }int pos2=buscarPosCliente(rutBuscado,rutsEntradas,cantCompraClientes);
+            pos=buscarPossCliente(rutBuscado,ruts,cantClientes);
+        }int pos2=buscarPossCliente(rutBuscado,rutsEntradas,cantCompraClientes);
         System.out.println(nombres[pos]+" "+apellidos[pos]+" con un saldo de: "+saldos[pos]+" pesos");
         System.out.println("Las entradas que ha comprado este clientes es de: "+cantEntradas[pos2]);
         System.out.println("La pelicula comprada fue: "+peliculaClientes[pos2]+" en el horario de: "+horarioEntradas[pos2]);
@@ -263,7 +263,7 @@ public class Taller_0
           
     }
 
-    public static int buscarPosCliente(String rutBuscado, String [] ruts, int cantClientes) {
+    public static int buscarPossCliente(String rutBuscado, String [] ruts, int cantClientes) {
         int pos=0;
         while(pos<=cantClientes-1 && !rutBuscado.equals(ruts[pos])){
                     pos++;
@@ -279,7 +279,7 @@ public class Taller_0
     public static void obtenerEntradasUsuario(String[]peliculaClientes,int cantCompraClientes,int pos,String[]peliculaCliente,String[]horarioEntradas, int[]salaComprada, String [][] matrizEntradaCliente) {
         Scanner sc = new Scanner(System.in);
         System.out.println("Las entradas a comprar son las siguientes: ");
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < cantCompraClientes; i++) {
             String linea=matrizEntradaCliente[pos][i];
             String []partes=linea.split(",");
              System.out.println(peliculaCliente[pos]+" en el horario de: "+ horarioEntradas[pos]+"en la sala n° "+salaComprada[pos]+" en el asiento: "+partes[0]+partes[1]);
@@ -299,11 +299,11 @@ public class Taller_0
         int cant=sc.nextInt();
         if (cantEntradas[pos]>1){
             System.out.println("Asientos a elminar: ");
-            
-            //saldos[pos2]=0.8*valorEntrada*canEntradas;
+            int cantEliminar=sc.nextInt();
+            saldos[pos2]=0.8*valorEntrada*(cantEntradas-cantEliminar);
         }
         else{
-            //saldos[pos2]=0.8*valorEntrada;
+            saldos[pos2]=0.8*valorEntrada;
         }
     }
         
