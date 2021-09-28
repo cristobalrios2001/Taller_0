@@ -222,7 +222,7 @@ public class Taller_0
             }
                                
         if (opcion==2){
-            obtenerInformacionUsuario( ruts, cantClientes, nombres, apellidos, saldos, cantEntradas, peliculaClientes, horarioEntradas, rutsEntradas,matrizEntradaCliente);
+           obtenerInformacionUsuario();
         }
         
     }
