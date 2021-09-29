@@ -206,7 +206,7 @@ public class Taller_0
         //opDevolucion();
     }
     
-    public static void opcionMain(int cantPeliculas, String[]nombrePeliculas,int [] recaudacionMañana,int [] recaudacionTarde,int [] recaudacionTotal, String [] ruts, int cantClientes, String[] nombres, String[] apellidos, int[] saldos, int []cantEntradas, String[] peliculaClientes, String[] horarioEntradas,String[] rutsEntradas,String[][]matrizEntradaCliente){
+    public static void opcionMain(int cantPeliculas, String[]nombrePeliculas,int [] recaudacionMañana,int [] recaudacionTarde,int [] recaudacionTotal, String [] ruts, int cantClientes, String[] nombres, String[] apellidos, int[] saldos, int []cantEntradas, String[] peliculaClientes, String[] horarioEntradas,String[] rutsEntradas,String[][]matrizEntradaCliente, int cantCompraClientes){
         Scanner sc = new Scanner(System.in);
         
         System.out.println("Has ingresado al menu de administrador");
@@ -222,7 +222,7 @@ public class Taller_0
             }
                                
         if (opcion==2){
-           obtenerInformacionUsuario();
+           obtenerInformacionUsuario( ruts,  cantClientes,nombres,  apellidos,saldos, cantEntradas,peliculaClientes,  horarioEntradas,  rutsEntradas,matrizEntradaCliente,  cantCompraClientes);
         }
         
     }
@@ -239,7 +239,9 @@ public class Taller_0
         }
     }
 
-    public static void obtenerInformacionUsuario(String [] ruts, int cantClientes, String[] nombres, String[] apellidos, int[] saldos, int []cantEntradas, String[] peliculaClientes, String[] horarioEntradas, String[] rutsEntradas,String[][]matrizEntradaCliente, int cantCompraClientes) {
+    public static void obtenerInformacionUsuario(String [] ruts, int cantClientes, String[] nombres, String[] apellidos, int[] saldos, 
+            int []cantEntradas, String[] peliculaClientes, String[] horarioEntradas, String[] rutsEntradas,
+            String[][]matrizEntradaCliente, int cantCompraClientes) {
         
         int rut=0;
         Scanner sc=new Scanner(System.in);
@@ -250,21 +252,27 @@ public class Taller_0
             System.out.println("Ingrese un rut correcto ");
             rutBuscado=sc.nextLine();
             pos=buscarPosCliente(rutBuscado,ruts,cantClientes);
-        }int pos2=buscarPosCliente(rutBuscado,rutsEntradas,cantCompraClientes);
-        System.out.println(nombres[pos]+" "+apellidos[pos]+" con un saldo de: "+saldos[pos]+" pesos");
-        System.out.println("Las entradas que ha comprado este clientes es de: "+cantEntradas[pos2]);
-        System.out.println("La pelicula comprada fue: "+peliculaClientes[pos2]+" en el horario de: "+horarioEntradas[pos2]);
-        for (int i = 0; i < cantCompraClientes; i++) {
-            String linea=matrizEntradaCliente[pos2][i];
-            String[]partes=linea.split(",");
-            System.out.println("Asiento: "+partes[0]+partes[1]);
-            
         }
-          
+        
+        int pos2=buscarPosCliente(rutBuscado,rutsEntradas,cantCompraClientes);
+        for (int i = 0; i < cantCompraClientes; i++) {
+            if(rutsEntradas[i].equalsIgnoreCase(rutBuscado)){
+                System.out.println(nombres[pos]+" "+apellidos[pos]+" con un saldo de: "+saldos[pos]+" pesos");
+                System.out.println("Las entradas que ha comprado este clientes es de: "+cantEntradas[pos2]);
+                System.out.println("La pelicula comprada fue: "+peliculaClientes[pos2]+" en el horario de: "+horarioEntradas[pos2]);
+                for (int j = 0; j < cantCompraClientes; j++) {
+                    String linea=matrizEntradaCliente[pos2][j];
+                    String[]partes=linea.split(",");
+                    System.out.println("Asiento: "+partes[0]+partes[1]);            
+                }         
+            }
+        }
+        
+         
     }
 
     public static int buscarPosCliente(String rutBuscado, String [] ruts, int cantClientes) {
-        int pos=0;
+        int pos=-1;
         while(pos<=cantClientes-1 && !rutBuscado.equals(ruts[pos])){
                     pos++;
                 }
@@ -274,37 +282,89 @@ public class Taller_0
         else{
             return pos;
         }
+        
+        
     }
 
-    public static void obtenerEntradasUsuario(String[]peliculaClientes,int cantCompraClientes,int pos,String[]peliculaCliente,String[]horarioEntradas, int[]salaComprada, String [][] matrizEntradaCliente) {
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    public static void obtenerEntradasUsuario(String rutBuscado,String[]peliculaClientes,int cantCompraClientes,int pos,
+            String[]peliculaCliente,String[]horarioEntradas, int[]salaComprada, String [][] matrizEntradaCliente, int [] cantEntradas,String[] rutsEntradas, int [] saldos) {
         Scanner sc = new Scanner(System.in);
-        System.out.println("Las entradas a comprar son las siguientes: ");
-        for (int i = 0; i < 10; i++) {
-            String linea=matrizEntradaCliente[pos][i];
-            String []partes=linea.split(",");
-             System.out.println(peliculaCliente[pos]+" en el horario de: "+ horarioEntradas[pos]+"en la sala n° "+salaComprada[pos]+" en el asiento: "+partes[0]+partes[1]);
+        int posClienteCompras =0;
+        for (int j = 0; j < cantCompraClientes; j++) {
+            if(rutsEntradas[j].equalsIgnoreCase(rutBuscado)){
+                posClienteCompras = j;
+                System.out.println("La/s peliculas del cliente son: ");
+                System.out.println(peliculaClientes[j]+" con "+ cantEntradas[j]+" entradas.");
+                System.out.println(peliculaCliente[j]+" en el horario de: "+ horarioEntradas[j]+"en la sala n° "+salaComprada[j]);
+                System.out.println("Posicion de las butacas para la pelicula: ");
+                for (int i = 0; i <cantEntradas[pos]; i++) {
+                    String linea = matrizEntradaCliente[j][i];
+                    String [] partes = linea.split(",");
+                    System.out.println("\t/ "+partes[0]+partes[1]+" /");
+                }
+                
+            }
         }
         
         System.out.println("Ingrese la pelicula a reembolsar");
-        String pelicula=sc.nextLine();
+        String peliculaReembolso =sc.nextLine();
         
+        for (int i = 0; i < 10; i++) {
+            if(!rutsEntradas[i].equalsIgnoreCase(rutBuscado) && !peliculaCliente[i].equalsIgnoreCase(peliculaReembolso)){
+                
+            }
+        }
         
+        int posPelicula=-1;
+        while(posPelicula<=cantCompraClientes-1 && !rutBuscado.equals(rutsEntradas[posPelicula])){
+                    posPelicula++;
+        }
+        if(pos == cantCompraClientes){
+            posPelicula=  -1;
+        }
+        
+        opDevolucion(cantEntradas, posPelicula, posClienteCompras, saldos, matrizEntradaCliente);
         
     }
 
-    public static void opDevolucion(int []cantEntradas,int pos,int pos2, int[]saldos) {
+    public static void opDevolucion(int []cantEntradas,int posPelicula,int posClienteCompras, int[]saldos, String [][] matrizEntradaCliente) {
         Scanner sc = new Scanner(System.in);
         
-        System.out.println("Cantidad de entradas a reembolsar: ");
+        System.out.print("Cantidad de entradas a reembolsar: ");
         int cant=sc.nextInt();
-        if (cantEntradas[pos]>1){
-            System.out.println("Asientos a elminar: ");
-            
-            //saldos[pos2]=0.8*valorEntrada*canEntradas;
+        
+        System.out.println("Cantidad de entradas a reembolsar: ");
+        while(cant > cantEntradas[posClienteCompras] && cant<1){
+            System.out.println("Ingrese nuevamente la cantidad de entradas.");
+            System.out.print("Cantidad de entradas a reembolsar: ");
+            cant=sc.nextInt();
         }
-        else{
-            //saldos[pos2]=0.8*valorEntrada;
+        
+        for (int i = 0; i <cant; i++) {
+            System.out.print("Ingrese butaca para devolución: ");
+            String entradasPos = sc.next();
+            for(int j = 0; j<cantEntradas[posClienteCompras];j++){
+                String linea =  matrizEntradaCliente[posClienteCompras][j];
+                String [] partes = linea.split(",");
+                String entrada = partes[0]+partes[1];
+                
+                if( matrizEntradaCliente[posClienteCompras][j].equalsIgnoreCase(entrada)){
+                    
+                    
+                }
+            }
         }
+        
     }
         
 }
