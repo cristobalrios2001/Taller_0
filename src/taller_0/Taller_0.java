@@ -51,24 +51,59 @@ public class Taller_0
         
         int cantCompraClientes = 0; 
         
-        int [][] sala1M = new int [10][30];
+        int [][] sala1M = new int [10][30]; optimizarSalas( sala1M);
+        int [][] sala2M = new int [10][30]; optimizarSalas( sala2M);
+        int [][] sala3M = new int [10][30]; optimizarSalas( sala3M);
+        
+        int [][] sala1T = new int [10][30]; optimizarSalas( sala1T);
+        int [][] sala2T = new int [10][30]; optimizarSalas( sala2T);
+        int [][] sala3T = new int [10][30]; optimizarSalas( sala3T);
+        
     }
     
-    public static void optimizarSalas(int [][]sala)
-    {
-        for (int i = 0; i < 5; i++) {
+    public static void optimizarSalas(int [][] sala){
+        for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 6; j++) {
                 sala[i][j] = -1;
             }
         }
         
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 4; i++) {
             for (int j = 26; j < 31; j++) {
                 sala[i][j] = -1;
             }
         }
         
         
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 31; j++) {
+                if(j>5 && j<26){
+                    if(j % 2 != 0){
+                        sala[i][j] = -1;
+                    }
+                }
+            }
+        }
+        
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 31; j++) {
+                if(j>5 && j<26){
+                    if(j % 2 != 0){
+                        sala[i][j] = 1;
+                    }
+                }
+            }
+        } 
+                   
+        for (int i = 4; i < 10; i++) {
+            for (int j = 0; j < 31; j++) {
+                
+                if((j+1) % 2 == 0){
+                    sala[i][j] = 1;
+                }
+                
+            }
+        }
     }
     public static int lecturaClientes(String [] nombres, String [] apellidos, String[]ruts, String [] contraseñas, int [] saldos) throws IOException 
     {
@@ -337,7 +372,8 @@ public class Taller_0
         
     }
 
-    public static void opDevolucion(int []cantEntradas,int posPelicula,int posClienteCompras, int[]saldos, String [][] matrizEntradaCliente) {
+    public static void opDevolucion(int []cantEntradas,int posPelicula,int posClienteCompras, int[]saldos, String [][] matrizEntradaCliente,  int [][] sala1M,int [][] sala2M,int [][] sala3M,int [][] sala1T,
+            int [][] sala2T,int [][] sala3T, String []  horarioEntradas, int [] salasCompradas, String [] letras) {
         Scanner sc = new Scanner(System.in);
         
         System.out.print("Cantidad de entradas a reembolsar: ");
@@ -357,13 +393,76 @@ public class Taller_0
                 String linea =  matrizEntradaCliente[posClienteCompras][j];
                 String [] partes = linea.split(",");
                 String entrada = partes[0]+partes[1];
+                String fil = partes[0];
+                int col = Integer.parseInt(partes[1]);
                 
                 if( matrizEntradaCliente[posClienteCompras][j].equalsIgnoreCase(entrada)){
+                    String horario = horarioEntradas[posClienteCompras];
+                    int sala = salasCompradas[posClienteCompras];
                     
-                    
+                        if(horario.equalsIgnoreCase("M"))
+                        {
+                            
+                            
+                            String opHorario = "Mañana";
+                            switch (sala) 
+                            {
+                                case 1:  
+                                    devolucionButaca( sala1M,  fil,  col, letras);
+                                    break;
+                                case 2:  
+                                    devolucionButaca( sala2M,  fil,  col, letras);
+                                    break;
+                                case 3:  
+                                    devolucionButaca( sala3M,  fil,  col, letras);
+                                    break;
+
+                                default: 
+                                    System.out.println("Sala invalida");
+                                    break;
+
+                            }
+
+                        }
+                        else if (horario.equalsIgnoreCase("T"))
+                        {                           
+
+                            String opHorario ="Tarde";
+                            switch (sala) 
+                            {
+                                case 1:  
+                                   devolucionButaca( sala1T,  fil,  col, letras);
+                                    break;
+                                case 2:  
+                                    devolucionButaca( sala2T,  fil,  col, letras);
+                                    break;
+                                case 3:  
+                                    devolucionButaca( sala3T,  fil,  col, letras);
+                                    break;
+
+                                default: 
+                                    System.out.println("Sala invalida");
+                                    break;
+
+                            }  
+
+                        }
                 }
             }
         }
+        
+    }
+    
+    
+    public static void devolucionButaca(int [][] sala, String fil, int col,String [] letras){
+        int posFil = 0;
+        for (int i = 0; i < 10; i++) {
+            if(letras[i].equalsIgnoreCase(fil)){
+                posFil = i;
+            }
+        }
+        
+        sala[posFil][col-1] = 0;
         
     }
         
