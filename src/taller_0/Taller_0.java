@@ -425,12 +425,11 @@ public class Taller_0
     public static void obtenerRecaudacion(int cantPeliculas, String[]nombrePeliculas,int [] recaudacionMañana,int [] recaudacionTarde,int [] recaudacionTotal) {
         for(int i=0;i<cantPeliculas;i++){
             int total=0;
-            total=recaudacionMañana[i]+recaudacionTarde[i];
-            System.out.println(nombrePeliculas[i]);
+            total=recaudacionMañana[i]+recaudacionTarde[i];            
             System.out.println("La recaudacion total por la pelicula: ´"+nombrePeliculas[i]+"´ es de: "+recaudacionTotal[i]+" pesos");
-            System.out.println("El monto recaudado a lo largo del dia es de: "+total+" pesos");
-            System.out.println("El monto recaudado en el horario de mañana es de: "+recaudacionMañana[i]+" pesos");
-            System.out.println("El monto recaudado en el horario de tarde es de: "+recaudacionTarde[i]+" pesos");
+            System.out.println("\tEl monto recaudado a lo largo del dia es de: "+total+" pesos");
+            System.out.println("\tEl monto recaudado en el horario de mañana es de: "+recaudacionMañana[i]+" pesos");
+            System.out.println("\tEl monto recaudado en el horario de tarde es de: "+recaudacionTarde[i]+" pesos");
         }
     }
 
@@ -441,8 +440,9 @@ public class Taller_0
         int rut=0;
         Scanner sc=new Scanner(System.in);
         System.out.print("Ingrese el rut a buscar: ");
-        String rutBuscado=sc.nextLine();
+        String rutBuscado=sc.next();
         int pos=buscarPosCliente(rutBuscado,ruts,cantClientes);
+        
         while(pos==-1){
             System.out.println("Ingrese un rut correcto ");
             rutBuscado=sc.nextLine();
@@ -450,9 +450,16 @@ public class Taller_0
         }
         
         int pos2=buscarPosCliente(rutBuscado,rutsEntradas,cantCompraClientes);
-        for (int i = 0; i < cantCompraClientes; i++) {
+        
+        System.out.println("Pos2: "+pos2);
+        
+        System.out.println("\n"+nombres[pos]+" "+apellidos[pos]+" con un saldo de: "+saldos[pos]+" pesos\n");
+        
+        if(pos2!=-1)
+        {
+            for (int i = 0; i < cantCompraClientes; i++) {
             if(rutsEntradas[i].equalsIgnoreCase(rutBuscado)){
-                System.out.println(nombres[pos]+" "+apellidos[pos]+" con un saldo de: "+saldos[pos]+" pesos");
+                //System.out.println(nombres[pos]+" "+apellidos[pos]+" con un saldo de: "+saldos[pos]+" pesos");
                 System.out.println("Las entradas que ha comprado este clientes es de: "+cantEntradas[pos2]);
                 System.out.println("La pelicula comprada fue: "+peliculaClientes[pos2]+" en el horario de: "+horarioEntradas[pos2]);
                 for (int j = 0; j < cantCompraClientes; j++) {
@@ -462,6 +469,11 @@ public class Taller_0
                 }         
             }
         }
+            
+        }else{
+            System.out.println("\tUsuario no ha realizado compras");
+        }
+        
         
          
     }
@@ -623,7 +635,7 @@ public class Taller_0
             int [] cantEntradas,String [] peliculaClientes, String []  horarioEntradas, int [] salasCompradas, String [][] matrizEntradaCliente ,int[] cantCompraClientesArray)
     {
         Scanner sc = new Scanner(System.in);
-        System.out.println("Ingrese nombre de pelicula a buscar: ");
+        System.out.print("Ingrese nombre de pelicula a buscar: ");
         String peliculaSolicitud = sc.next();
         
         
@@ -940,7 +952,10 @@ public class Taller_0
                     System.out.println("\tEl horario de la pelicula es en la "+horarioEntradas[i]);
                     System.out.println("\tLas butacas compradas por el cliente para esta pelicula son: ");
                     for (int j = 0; j < cantEntradas[i]; j++) {
-                        System.out.println("\t\t"+matrizEntradaCliente[i][cantEntradas[i]]+" / ");
+                        String entradaComa = matrizEntradaCliente[i][j];
+                        String [] linea = entradaComa.split(",");
+                        
+                        System.out.println("\t\t"+"/ "+linea[0]+linea[1]+" / ");
                     }
                 }
             }
@@ -955,15 +970,15 @@ public class Taller_0
             System.out.println("\tHorarios disponibles en la MAÑANA");
             for (int j = 0; j < 3; j++) {
                 if (funcionMañana[i][j] = true ){
-                    //System.out.println("\t\t"+funcionMañana[i][j]);
+                    
                     System.out.println("\t\tFuncion disponible en la Sala / "+salas[j] +" /" );
                 }
             }
             System.out.println("\tHorarios disponibles en la TARDE");
             for (int k = 0; k < 3; k++) {
                 if (funcionTarde[i][k] = true ){
-                    //System.out.println("\t\t"+funcionTarde[i][k]);
-                    System.out.println("\t\tFuncion disponible en la Sala  /"+salas[k] +" /" );
+                    
+                    System.out.println("\t\tFuncion disponible en la Sala  / "+salas[k] +" /" );
                 }
             }
         }
