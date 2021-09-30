@@ -197,6 +197,7 @@ public class Taller_0
                 ingresarFuncion(horario,nSala,salas,funcionesMañana,funcionesTarde,cantPeliculas);
                 
             }
+            cantPeliculas++;
             
         }
         return cantPeliculas;
@@ -239,6 +240,7 @@ public class Taller_0
                     case 1:
                         System.out.println("Has seleccionado la opción 1: Iniciar Sesión");
                         int posCliente = verificarRut( ruts,  contraseñas, cantClientes);
+                        System.out.println(posCliente);
                         if(posCliente!= -1 && posCliente != 2 ){
                             menuCliente (posCliente,nombres,apellidos, saldo, cantPeliculas,  tipoPelicula, 
                             nombrePelicula,  funcionMañana,  funcionTarde, salas,  sala1M, sala2M, sala3M, sala1T,
@@ -634,24 +636,24 @@ public class Taller_0
             if(peliculaSolicitud.equalsIgnoreCase(nombrePelicula[i]))
             {
                 posPelicula = i;
-                for (int j = 0; j < cantPeliculas; j++) 
-                {
+                
+                
                     for (int k = 0; k < 3; k++) 
                     {
-                        if(funcionMañana[j][k] == true)
+                        if(funcionMañana[i][k] == true)
                         {
                             horarioM = true;
                             System.out.println("Funcion disponible en las siguiente(s) sala(s) en el horario de la mañana: ");
                             System.out.println("Sala "+salas[k]);
                         }
-                        else if(funcionTarde[j][k] == true)
+                        else if(funcionTarde[i][k] == true)
                         {
                             horarioT = true;
                             System.out.println("Funcion disponible en las siguiente(s) sala(s) en el horario de la tarde: ");
                             System.out.println("Sala "+salas[k]);
                         }
                     }
-                }
+                
             }
             else if(i == cantPeliculas)
             {
@@ -665,11 +667,7 @@ public class Taller_0
         
         System.out.print("Ingrese horario de la función: ");
         String horarioSeleccion = sc.next();
-        while(!horarioSeleccion.equalsIgnoreCase("Mañana") && !horarioSeleccion.equalsIgnoreCase("Tarde")){
-            System.out.println("Horario no valido");
-            System.out.print("Ingrese horario de la función: ");
-            horarioSeleccion = sc.next();
-        }
+        
         
         
         if(horarioSeleccion.equalsIgnoreCase("Mañana") && horarioM == true)
@@ -813,8 +811,11 @@ public class Taller_0
         }
         
         if(Status[posCliente].equalsIgnoreCase("Habilitado")){
+            System.out.println("Por tener su pase de movilidad HABILITADO, posee descuento.");
             double descuento = valorEntrada +0.15;
             valorEntrada = (int) (valorEntrada-descuento);
+        }else{
+            System.out.println("No posee descuento. No tiene pase de movilidad habilitado.");
         }
         
         if (saldo[posCliente]<valorEntrada){
@@ -940,18 +941,21 @@ public class Taller_0
     
         
     public static void cartelera (int cantPeliculas, boolean [][] funcionMañana, boolean [][] funcionTarde, int [] salas,  String [] nombrePeliculas){
+        
         for (int i = 0; i < cantPeliculas; i++) {
-            System.out.println("La pelicula "+nombrePeliculas[i]+", tiene los siguientes horarios: ");
-            System.out.println("Horarios disponibles en la MAÑANA");
+            System.out.println("\nLa pelicula "+nombrePeliculas[i]+", tiene los siguientes horarios: ");
+            System.out.println("\tHorarios disponibles en la MAÑANA");
             for (int j = 0; j < 3; j++) {
                 if (funcionMañana[i][j] = true ){
-                    System.out.println("\t"+funcionMañana[i][j]);
+                    //System.out.println("\t\t"+funcionMañana[i][j]);
+                    System.out.println("\t\tFuncion disponible en la Sala / "+salas[j] +" /" );
                 }
             }
-            System.out.println("Horarios disponibles en la TARDE");
+            System.out.println("\tHorarios disponibles en la TARDE");
             for (int k = 0; k < 3; k++) {
                 if (funcionTarde[i][k] = true ){
-                    System.out.println("\t"+funcionTarde[i][k]);
+                    //System.out.println("\t\t"+funcionTarde[i][k]);
+                    System.out.println("\t\tFuncion disponible en la Sala  /"+salas[k] +" /" );
                 }
             }
         }
