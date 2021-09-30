@@ -21,6 +21,8 @@ public class Taller_0
         
                      //lectura Status.txt
         String [] status = new String [350];
+        lecturaStados (ruts,  status,  cantClientes);
+        
         
                      // lectura peliculas.txt
         String [] tipoPelicula = new String[45];
@@ -57,6 +59,8 @@ public class Taller_0
         int [][] sala1T = new int [10][31]; optimizarSalas( sala1T);
         int [][] sala2T = new int [10][31]; optimizarSalas( sala2T);
         int [][] sala3T = new int [10][31]; optimizarSalas( sala3T);
+        
+        
         
         
         sistema ( saldos, cantPeliculas,  tipoPelicula, nombres,  apellidos,  contraseñas,  cantClientes,
@@ -162,10 +166,8 @@ public class Taller_0
                 String statu = partes[1];
                 status[posUsuario] = statu;
                 
-            }else
-            {
-                System.out.println("Usuario No Encontrado");   
             }
+           
         }
         
     }
@@ -240,7 +242,7 @@ public class Taller_0
                     case 1:
                         System.out.println("Has seleccionado la opción 1: Iniciar Sesión");
                         int posCliente = verificarRut( ruts,  contraseñas, cantClientes);
-                        System.out.println(posCliente);
+                       
                         if(posCliente!= -1 && posCliente != 2 ){
                             menuCliente (posCliente,nombres,apellidos, saldo, cantPeliculas,  tipoPelicula, 
                             nombrePelicula,  funcionMañana,  funcionTarde, salas,  sala1M, sala2M, sala3M, sala1T,
@@ -302,7 +304,7 @@ public class Taller_0
                         System.out.println("\nHas seleccionado la opción 2: Información Usuario.");
                         obtenerInformaciónUsuario ( posCliente,  ruts, nombres,  apellidos, saldos,
                         rutEntradas,  cantEntradas,  peliculasClientes,  horarioEntradas,  salaComprada, matrizEntradaCliente,
-                         cantCompraClientes);
+                         cantCompraClientesArray);
                         
                         break;
                     case 3:
@@ -466,17 +468,14 @@ public class Taller_0
 
     public static int buscarPosCliente(String rutBuscado, String [] ruts, int cantClientes) {
         int pos=-1;
-        while(pos<=cantClientes-1 && !rutBuscado.equals(ruts[pos])){
-                    pos++;
-                }
-        if(pos == cantClientes){
-            return -1;
-         }
-        else{
-            return pos;
+        
+        
+        for (int i = 0; i < cantClientes; i++) {
+            if(ruts[i].equalsIgnoreCase(rutBuscado)){
+                pos = i;
+            }
         }
-        
-        
+        return pos;
     }
     
     
@@ -683,7 +682,7 @@ public class Taller_0
                     obtenerSalasAsientos ( sala1M,  letras);
                     confirmarCompra(  letras,  posPelicula,  tipoPelicula, saldo,  posCliente, status,
                         ruts,  nombrePeliculas,  opHorario,  sala, sala1M,  cantCompraClientes,  rutsEntradas, cantEntradas,
-                        peliculaClientes,  horarioEntradas,  salasCompradas,  matrizEntradaCliente,cantCompraClientesArray);
+                        peliculaClientes,  horarioEntradas,  salasCompradas,  matrizEntradaCliente,cantCompraClientesArray,saldos);
                     break;
                 case 2:  
                     // int [][] sala2M;;
@@ -691,7 +690,7 @@ public class Taller_0
                     obtenerSalasAsientos ( sala2M,  letras);
                     confirmarCompra(  letras,  posPelicula,  tipoPelicula, saldo,  posCliente, status,
                         ruts,  nombrePeliculas,  opHorario,  sala, sala2M,  cantCompraClientes,  rutsEntradas, cantEntradas,
-                        peliculaClientes,  horarioEntradas,  salasCompradas,  matrizEntradaCliente,cantCompraClientesArray);
+                        peliculaClientes,  horarioEntradas,  salasCompradas,  matrizEntradaCliente,cantCompraClientesArray,saldos);
                     break;
                 case 3:  
                     // int [][] sala3M;;
@@ -699,7 +698,7 @@ public class Taller_0
                     obtenerSalasAsientos ( sala3M,  letras);
                     confirmarCompra(  letras,  posPelicula,  tipoPelicula, saldo,  posCliente, status,
                         ruts,  nombrePeliculas,  opHorario,  sala, sala3M,  cantCompraClientes,  rutsEntradas, cantEntradas,
-                        peliculaClientes,  horarioEntradas,  salasCompradas,  matrizEntradaCliente,cantCompraClientesArray);
+                        peliculaClientes,  horarioEntradas,  salasCompradas,  matrizEntradaCliente,cantCompraClientesArray,saldos);
                     break;
 
                 default: 
@@ -723,7 +722,7 @@ public class Taller_0
                     obtenerSalasAsientos ( sala1T,  letras);
                     confirmarCompra(  letras,  posPelicula,  tipoPelicula, saldo,  posCliente, status,
                         ruts,  nombrePeliculas,  opHorario,  sala, sala1T,  cantCompraClientes,  rutsEntradas, cantEntradas,
-                        peliculaClientes,  horarioEntradas,  salasCompradas,  matrizEntradaCliente,cantCompraClientesArray);
+                        peliculaClientes,  horarioEntradas,  salasCompradas,  matrizEntradaCliente,cantCompraClientesArray,saldos);
                     
                     break;
                 case 2:  
@@ -732,7 +731,7 @@ public class Taller_0
                     obtenerSalasAsientos ( sala2T,  letras);
                     confirmarCompra(  letras,  posPelicula,  tipoPelicula, saldo,  posCliente, status,
                         ruts,  nombrePeliculas,  opHorario,  sala, sala2T,  cantCompraClientes,  rutsEntradas, cantEntradas,
-                        peliculaClientes,  horarioEntradas,  salasCompradas,  matrizEntradaCliente,cantCompraClientesArray);
+                        peliculaClientes,  horarioEntradas,  salasCompradas,  matrizEntradaCliente,cantCompraClientesArray,saldos);
                     break;
                 case 3:  
                     // int [][] sala3T;
@@ -740,7 +739,7 @@ public class Taller_0
                     obtenerSalasAsientos ( sala3T,  letras);
                     confirmarCompra(  letras,  posPelicula,  tipoPelicula, saldo,  posCliente, status,
                         ruts,  nombrePeliculas,  opHorario,  sala, sala3T,  cantCompraClientes,  rutsEntradas, cantEntradas,
-                        peliculaClientes,  horarioEntradas,  salasCompradas,  matrizEntradaCliente,cantCompraClientesArray);
+                        peliculaClientes,  horarioEntradas,  salasCompradas,  matrizEntradaCliente,cantCompraClientesArray,saldos);
                     break;
 
                 default: 
@@ -794,7 +793,7 @@ public class Taller_0
     
     public static void confirmarCompra( String [] letras, int posPelicula, String [] tipoPelicula, int [] saldo, int posCliente, String [] Status,
             String[]ruts, String [] nombrePeliculas, String horario, int salaCompradaFuncion, int [][] matrizSala, int cantCompraClientes, String [] rutsEntradas, int [] cantEntradas,
-            String [] peliculaClientes, String [] horarioEntradas, int [] salasCompradas, String [][] matrizEntradaCliente, int [] cantCompraClientesArray){
+            String [] peliculaClientes, String [] horarioEntradas, int [] salasCompradas, String [][] matrizEntradaCliente, int [] cantCompraClientesArray, int [] saldos){
         
         Scanner sc = new Scanner(System.in);
         
@@ -804,16 +803,16 @@ public class Taller_0
         int valorEntrada = 0;
         
         if(tipoPelicula[posPelicula].equalsIgnoreCase("Estreno")){
-            valorEntrada = cantEntradasAComprar * 5500 ;
+            valorEntrada += cantEntradasAComprar * 5500 ;
         }
         else if (tipoPelicula[posPelicula].equalsIgnoreCase("Liberada")){
-            valorEntrada = cantEntradasAComprar * 4000 ;
+            valorEntrada += cantEntradasAComprar * 4000 ;
         }
         
         if(Status[posCliente].equalsIgnoreCase("Habilitado")){
             System.out.println("Por tener su pase de movilidad HABILITADO, posee descuento.");
-            double descuento = valorEntrada +0.15;
-            valorEntrada = (int) (valorEntrada-descuento);
+            double descuento = (valorEntrada +0.15);
+            valorEntrada += (int) (valorEntrada-descuento);
         }else{
             System.out.println("No posee descuento. No tiene pase de movilidad habilitado.");
         }
@@ -835,8 +834,9 @@ public class Taller_0
             }
             
         }else{
+            
             buscarPosSala(posCliente, ruts, posPelicula,  nombrePeliculas, horario,   salaCompradaFuncion , cantEntradasAComprar,  matrizSala,
-             letras,  cantCompraClientes, rutsEntradas, cantEntradas, peliculaClientes, horarioEntradas, salasCompradas, matrizEntradaCliente, cantCompraClientesArray);
+             letras,  cantCompraClientes, rutsEntradas, cantEntradas, peliculaClientes, horarioEntradas, salasCompradas, matrizEntradaCliente, cantCompraClientesArray, valorEntrada,saldos);
         }
         
         
@@ -851,7 +851,7 @@ public class Taller_0
     }
     
     public static void buscarPosSala(int posCliente, String []ruts,int posPelicula, String [] nombrePeliculas,String horario,  int salaCompradaFuncion ,int cantEntradasAComprar, int [][] matrizSala,
-            String [] letras, int cantCompraClientes,String [] rutsEntradas, int [] cantEntradas,String [] peliculaClientes,String [] horarioEntradas,int [] salasCompradas, String [][] matrizEntradaCliente, int [] cantCompraClientesArray){
+            String [] letras, int cantCompraClientes,String [] rutsEntradas, int [] cantEntradas,String [] peliculaClientes,String [] horarioEntradas,int [] salasCompradas, String [][] matrizEntradaCliente, int [] cantCompraClientesArray, int cobro, int [] saldos){
         
         Scanner sc = new Scanner(System.in);
         for (int i = 0; i < cantEntradasAComprar; i++) {
@@ -867,12 +867,12 @@ public class Taller_0
         }
             
             
-            System.out.println("Ingrese la Columna de la butaca(1 - 30) : ");
+            System.out.print("Ingrese la Columna de la butaca(1 - 30): ");
             int posSalaCol = sc.nextInt();
             
             while (posSalaCol<1 && posSalaCol>30){ 
                 System.out.println("Numero de columna incorrecto, vuelva a ingresar la opción.");
-                System.out.print("Ingrese la Columna de la butaca(1 - 30) : ");
+                System.out.print("Ingrese la Columna de la butaca(1 - 30): ");
                 posSalaCol = sc.nextInt();
             }
             
@@ -890,16 +890,22 @@ public class Taller_0
                 }
             }
             
+                        
             if(matrizSala [posFil][posCol] == -1 || matrizSala[posFil][posCol] == 1 || matrizSala[posFil][posCol] == 2){
                 System.out.println("Posición no disponible");
             }else{
+                System.out.println("\t----Entrada Comprada----");
+                
+                saldos[posCliente]-=cobro;                
                 matrizSala [posFil][posCol] = 2;
+                peliculaClientes[cantCompraClientes] = nombrePeliculas[posPelicula];
                 rutsEntradas[cantCompraClientes] = ruts[posCliente];
                 cantEntradas[cantCompraClientes] = cantEntradasAComprar;
                 horarioEntradas[cantCompraClientes] = horario;
                 salasCompradas[cantCompraClientes] = salaCompradaFuncion;
                 for (int h = 0; h < cantEntradasAComprar; h++) {
-                    matrizEntradaCliente[cantCompraClientes][h] = posSalaFil+","+posSalaCol;
+                    
+                    matrizEntradaCliente[cantCompraClientes][h] = letras[posCol]+","+(posCol+1);
                 }
                 cantCompraClientesArray[0]+=1;
                 
@@ -918,9 +924,11 @@ public class Taller_0
     
     public static void obtenerInformaciónUsuario (int posCliente, String [] ruts, String [] nombres, String [] apellidos, int [] saldos,
         String [] rutEntradas, int [] cantEntradas, String [] peliculasClientes, String [] horarioEntradas, int [] salaComprada,String [][] matrizEntradaCliente,
-        int cantCompraClientes){
+        int [] cantCompraClientes){
         System.out.println("Información del Cliente");
-        for (int i = 0; i < cantCompraClientes; i++) {
+        
+        for (int i = 0; i < cantCompraClientes[0]; i++) {
+            
             if(rutEntradas[i].equalsIgnoreCase(ruts[posCliente])){
                 System.out.println("\tNombre del Cliente : "+ nombres[posCliente]+ " "+ apellidos[posCliente]);
                 System.out.println("\tRut del Cliente : "+ruts[posCliente]);
