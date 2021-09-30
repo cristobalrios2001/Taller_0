@@ -311,7 +311,7 @@ public class Taller_0
                         System.out.println("\nHas seleccionado la opción 3: Devolución Entrada.");
                         String rut=ruts[posCliente];
                         devolucionEntrada( rut,  rutsEntradas, cantEntradas,  peliculaClientes, horarioEntradas, salaComprada,  matrizEntradaCliente,  cantCompraClientes, ruts, cantClientes, saldos,
-                                         peliculasClientes,  letras,  sala1M,  sala2M,  sala3M, sala1T,sala2T, sala3T, salasCompradas);
+                                         peliculasClientes,  letras,  sala1M,  sala2M,  sala3M, sala1T,sala2T, sala3T, salasCompradas, cantCompraClientesArray);
                         break;
                     case 4:
                         System.out.println("\nHas seleccionado la opción 4: Cartelera.");
@@ -407,7 +407,7 @@ public class Taller_0
     
     public static void devolucionEntrada(String rut, String [] rutsEntradas, int [] cantEntradas, String [] peliculaClientes,String [] horarioEntradas, int [] salaComprada, String [][] matrizEntradaCliente, int cantCompraClientes, String[]ruts,int cantClientes,int[]saldos,
                                         String [] peliculaCliente, String [] letras, int [][] sala1M, int [][] sala2M, int [][] sala3M, int [][] sala1T,
-                                        int [][] sala2T,int [][] sala3T,int [] salasCompradas){
+                                        int [][] sala2T,int [][] sala3T,int [] salasCompradas, int [] cantCompraClientesArray){
         
         
         String rutBuscado = rut;
@@ -416,7 +416,7 @@ public class Taller_0
         
         obtenerEntradasUsuario( rutBuscado,peliculaClientes, cantCompraClientes, pos,
             peliculaCliente,horarioEntradas,salaComprada,  matrizEntradaCliente,  cantEntradas, rutsEntradas,
-             saldos,  letras, sala1M, sala2M, sala3M, sala1T,  sala2T, sala3T, salasCompradas);
+             saldos,  letras, sala1M, sala2M, sala3M, sala1T,  sala2T, sala3T, salasCompradas, cantCompraClientesArray);
         
     }
     
@@ -493,20 +493,20 @@ public class Taller_0
     
     public static void obtenerEntradasUsuario(String rutBuscado,String[]peliculaClientes,int cantCompraClientes,int pos,
             String[]peliculaCliente,String[]horarioEntradas, int[]salaComprada, String [][] matrizEntradaCliente, int [] cantEntradas,String[] rutsEntradas,
-            int [] saldos, String [] letras,int [][] sala1M,int [][] sala2M,int [][] sala3M,int [][] sala1T, int [][] sala2T,int [][] sala3T,int [] salasCompradas) {
+            int [] saldos, String [] letras,int [][] sala1M,int [][] sala2M,int [][] sala3M,int [][] sala1T, int [][] sala2T,int [][] sala3T,int [] salasCompradas, int []cantCompraClientesArray) {
         Scanner sc = new Scanner(System.in);
         int posClienteCompras =0;
-        for (int j = 0; j < cantCompraClientes; j++) {
+        for (int j = 0; j < cantCompraClientesArray[0]; j++) {
             if(rutsEntradas[j].equalsIgnoreCase(rutBuscado)){
                 posClienteCompras = j;
                 System.out.println("La/s peliculas del cliente son: ");
-                System.out.println(peliculaClientes[j]+" con "+ cantEntradas[j]+" entradas.");
-                System.out.println(peliculaCliente[j]+" en el horario de: "+ horarioEntradas[j]+"en la sala n° "+salaComprada[j]);
-                System.out.println("Posicion de las butacas para la pelicula: ");
+                System.out.println("\t"+peliculaClientes[j]+" con "+ cantEntradas[j]+" entradas.");
+                System.out.println("\t"+peliculaCliente[j]+" en el horario de: "+ horarioEntradas[j]+" en la sala n° "+salaComprada[j]);
+                System.out.println("\"\\t\"+Posicion de las butacas para la pelicula: ");
                 for (int i = 0; i <cantEntradas[pos]; i++) {
                     String linea = matrizEntradaCliente[j][i];
                     String [] partes = linea.split(",");
-                    System.out.println("\t/ "+partes[0]+partes[1]+" /");
+                    System.out.println("\t\t/ "+partes[0]+partes[1]+" /");
                 }
                 
             }
@@ -515,6 +515,16 @@ public class Taller_0
         System.out.println("Ingrese la pelicula a reembolsar");
         String peliculaReembolso =sc.nextLine();
         
+        int posPelicula  = 0;
+        for (int i = 0; i < cantCompraClientesArray[0]; i++) {
+            if(rutsEntradas[i].equalsIgnoreCase(rutBuscado) && peliculaCliente[i].equalsIgnoreCase(peliculaReembolso) ){
+                posPelicula = i;
+            }
+        }
+        
+        
+        
+        /*
         for (int i = 0; i < 10; i++) {
             if(!rutsEntradas[i].equalsIgnoreCase(rutBuscado) && !peliculaCliente[i].equalsIgnoreCase(peliculaReembolso)){
                 
@@ -528,20 +538,22 @@ public class Taller_0
         if(pos == cantCompraClientes){
             posPelicula=  -1;
         }
-        
+        */
         opDevolucion(cantEntradas, posPelicula, posClienteCompras, saldos, matrizEntradaCliente,  sala1M, sala2M,sala3M, sala1T,
-             sala2T, sala3T,  horarioEntradas, salasCompradas,  letras);
+             sala2T, sala3T,  horarioEntradas, salasCompradas,  letras, cantCompraClientesArray, rutsEntradas, peliculaCliente);
+        
+        
         
     }
 
     public static void opDevolucion(int []cantEntradas,int posPelicula,int posClienteCompras, int[]saldos, String [][] matrizEntradaCliente,  int [][] sala1M,int [][] sala2M,int [][] sala3M,int [][] sala1T,
-            int [][] sala2T,int [][] sala3T, String []  horarioEntradas, int [] salasCompradas, String [] letras) {
+            int [][] sala2T,int [][] sala3T, String []  horarioEntradas, int [] salasCompradas, String [] letras,int []cantCompraClientesArray,String [] rutsEntradas, String [] peliculasClientes) {
         Scanner sc = new Scanner(System.in);
         
         System.out.print("Cantidad de entradas a reembolsar: ");
         int cant=sc.nextInt();
         
-        System.out.println("Cantidad de entradas a reembolsar: ");
+        
         while(cant > cantEntradas[posClienteCompras] && cant<1){
             System.out.println("Ingrese nuevamente la cantidad de entradas.");
             System.out.print("Cantidad de entradas a reembolsar: ");
@@ -559,6 +571,7 @@ public class Taller_0
                 int col = Integer.parseInt(partes[1]);
                 
                 if(entrada.equalsIgnoreCase(entradasPos)){
+                    
                     if( matrizEntradaCliente[posClienteCompras][j].equalsIgnoreCase(entrada)){
                         String horario = horarioEntradas[posClienteCompras];
                         int sala = salasCompradas[posClienteCompras];
@@ -613,6 +626,25 @@ public class Taller_0
                 
             }
         }
+        
+        
+        
+       
+        for(int k = posPelicula ; k <cantCompraClientesArray[0]-1; k++) {
+            rutsEntradas[k] = rutsEntradas[k + 1];
+            cantEntradas[k] = cantEntradas[k + 1];
+            peliculasClientes[k] = peliculasClientes[k + 1];
+            horarioEntradas[k] = horarioEntradas[k + 1];
+            salasCompradas[k] = salasCompradas[k + 1];
+            for (int i = 0; i < cantEntradas[k]; i++) {
+                matrizEntradaCliente[k] = matrizEntradaCliente[k + 1];
+            }
+        }
+       cantCompraClientesArray[0]--; 
+        
+        
+        
+        
         
     }
     
