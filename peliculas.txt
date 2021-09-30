@@ -1,0 +1,5 @@
+Rápidos y Furiosos,estreno,1500000,2,M,2,T,1,T
+El conjuro 3,liberada,2000000,1,M
+Coco,liberada,2500000,2,T
+Avatar,estreno,5000000,3,T
+Pepa Pig,liberada,500000,3,M

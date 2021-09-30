@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package taller_0;
 
 import java.io.File;
@@ -52,36 +47,40 @@ public class Taller_0
         int [] salaComprada = new int [350];
         String [][] matrizEntradaCliente = new String [350][10];
         
-        int cantCompraClientes = 0; 
+        int[] cantCompraClientesArray=new int[1];
+        int cantCompraClientes = cantCompraClientesArray[0]; 
         
-        int [][] sala1M = new int [10][30]; optimizarSalas( sala1M);
-        int [][] sala2M = new int [10][30]; optimizarSalas( sala2M);
-        int [][] sala3M = new int [10][30]; optimizarSalas( sala3M);
+        int [][] sala1M = new int [10][31]; optimizarSalas( sala1M);
+        int [][] sala2M = new int [10][31]; optimizarSalas( sala2M);
+        int [][] sala3M = new int [10][31]; optimizarSalas( sala3M);
         
-        int [][] sala1T = new int [10][30]; optimizarSalas( sala1T);
-        int [][] sala2T = new int [10][30]; optimizarSalas( sala2T);
-        int [][] sala3T = new int [10][30]; optimizarSalas( sala3T);
+        int [][] sala1T = new int [10][31]; optimizarSalas( sala1T);
+        int [][] sala2T = new int [10][31]; optimizarSalas( sala2T);
+        int [][] sala3T = new int [10][31]; optimizarSalas( sala3T);
         
         
         sistema ( saldos, cantPeliculas,  tipoPelicula, nombres,  apellidos,  contraseñas,  cantClientes,
              nombrePeliculas,  funcionesMañana,  funcionesTarde, salas,  sala1M, sala2M, sala3M, sala1T,
              sala2T, sala3T, letras,status,  ruts,   cantCompraClientes, rutsEntradas,
              cantEntradas, peliculaClientes,   horarioEntradas,  salaComprada,  matrizEntradaCliente, peliculaClientes,
-             salaComprada,  rutsEntradas,  recaudacionMañana,  recaudacionTarde,  recaudacionTotal);
+             salaComprada,  rutsEntradas,  recaudacionMañana,  recaudacionTarde,  recaudacionTotal,cantCompraClientesArray);
         
         
     }
     
-    public static void optimizarSalas(int [][] sala){
+    public static void optimizarSalas(int [][] sala1M){
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 6; j++) {
-                sala[i][j] = -1;
+                sala1M[i][j] = -1;
             }
         }
         
         for (int i = 0; i < 4; i++) {
-            for (int j = 26; j < 31; j++) {
-                sala[i][j] = -1;
+            for (int j = 0; j <=30; j++) {
+                if(j>25){
+                    sala1M[i][j] = -1;
+                }
+               
             }
         }
         
@@ -90,7 +89,7 @@ public class Taller_0
             for (int j = 0; j < 31; j++) {
                 if(j>5 && j<26){
                     if(j % 2 != 0){
-                        sala[i][j] = -1;
+                        sala1M[i][j] = -1;
                     }
                 }
             }
@@ -100,7 +99,7 @@ public class Taller_0
             for (int j = 0; j < 31; j++) {
                 if(j>5 && j<26){
                     if(j % 2 != 0){
-                        sala[i][j] = 1;
+                        sala1M[i][j] = 1;
                     }
                 }
             }
@@ -110,7 +109,7 @@ public class Taller_0
             for (int j = 0; j < 31; j++) {
                 
                 if((j+1) % 2 == 0){
-                    sala[i][j] = 1;
+                    sala1M[i][j] = 1;
                 }
                 
             }
@@ -149,14 +148,14 @@ public class Taller_0
     
     public static void lecturaStados (String [] ruts, String [] status, int cantClientes) throws IOException
     {
-        Scanner sc = new Scanner(new File("Status.txt"));        
+        Scanner sc = new Scanner(new File("status.txt"));        
         while(sc.hasNextLine())
         {
             String linea = sc.next();
             String [] partes = linea.split(",");
             String rutBuscar = partes[0];
             
-            int posUsuario = buscarPosCliente( ruts,  rutBuscar, cantClientes);
+            int posUsuario = buscarPosCliente( rutBuscar,  ruts, cantClientes);
             
             if(posUsuario != -1)
             {
@@ -175,10 +174,11 @@ public class Taller_0
     
     public static int lecturaPeliculas (String [] tipoPeliculas,String [] nombrePeliculas,int [] recaudacionTotal,int [] salas, boolean [][] funcionesMañana, boolean [][] funcionesTarde) throws IOException 
     {
-        Scanner sc = new Scanner(new File("Peliculas.txt"));
+        Scanner sc = new Scanner(new File("peliculas.txt"));
+        
         int cantPeliculas = 0;
         while(sc.hasNextLine()){
-            String linea = sc.next();
+            String linea = sc.nextLine();
             String [] partes = linea.split(",");
             
             String nombrePelicula = partes[0];
@@ -190,31 +190,17 @@ public class Taller_0
             int recaudacionPelicula = Integer.parseInt(partes[2]);
             recaudacionTotal [cantPeliculas] = recaudacionPelicula;
             
-            for (int i = 3; i < 9; i++) {
+            for (int i = 3; i < partes.length; i+=2) {
+                int nSala = Integer.parseInt(partes[i]);
+                String horario = partes[i+1];
+                
+                ingresarFuncion(horario,nSala,salas,funcionesMañana,funcionesTarde,cantPeliculas);
                 
             }
             
-            
-            int salaF1 = Integer.parseInt(partes[3]);
-            String horarioF1 = partes[4];
-            
-            ingresarFuncion ( horarioF1, salaF1, salas,  funcionesMañana,  funcionesTarde,  cantPeliculas);
-            
-            int salaF2 = Integer.parseInt(partes[5]);
-            String horarioF2 = partes[5];
-            
-            ingresarFuncion ( horarioF2,  salaF2,  salas, funcionesMañana, funcionesTarde, cantPeliculas);
-            
-            int salaF3 = Integer.parseInt(partes[7]);
-            String horarioF3 = partes[8];
-            
-            ingresarFuncion (horarioF3,  salaF3, salas,  funcionesMañana, funcionesTarde,  cantPeliculas);
-            
-            
-            
-            
         }
         return cantPeliculas;
+        
     }
     
     public static void ingresarFuncion (String horario, int sala,int [] salas, boolean [][] funcionesMañana, boolean [][] funcionesTarde, int cantPeliculas)
@@ -239,7 +225,7 @@ public class Taller_0
             String [] nombrePelicula, boolean [][] funcionMañana, boolean [][] funcionTarde, int [] salas, int [][] sala1M,int [][] sala2M,int [][] sala3M,int [][] sala1T,
             int [][] sala2T,int [][] sala3T,String [] letras, String [] status, String [] ruts, int cantCompraClientes,String [] rutsEntradas,
             int [] cantEntradas,String [] peliculaClientes, String []  horarioEntradas, int [] salasCompradas, String [][] matrizEntradaCliente,String [] peliculasClientes,
-            int [] salaComprada, String [] rutEntradas, int [] recaudacionMañana, int [] recaudacionTarde, int [] recaudacionTotal){
+            int [] salaComprada, String [] rutEntradas, int [] recaudacionMañana, int [] recaudacionTarde, int [] recaudacionTotal,int[] cantCompraClientesArray){
         Scanner sn = new Scanner(System.in);
         boolean salir = false;
         int opcion; 
@@ -258,19 +244,19 @@ public class Taller_0
                             nombrePelicula,  funcionMañana,  funcionTarde, salas,  sala1M, sala2M, sala3M, sala1T,
                             sala2T, sala3T, letras,  saldo,  status,  ruts, nombrePelicula,  cantCompraClientes, rutsEntradas,
                             cantEntradas, peliculaClientes,   horarioEntradas,  salasCompradas,  matrizEntradaCliente, peliculasClientes,
-                             salaComprada,  rutEntradas);
+                             salaComprada,  rutEntradas, cantClientes, cantCompraClientesArray);
                         }
                         else if (posCliente == 2){
                             menuAdmin( cantPeliculas, nombrePelicula, recaudacionMañana, recaudacionTarde, recaudacionTotal,  ruts,  cantClientes, nombres, apellidos, saldo, cantEntradas, 
                                      peliculaClientes,  horarioEntradas, rutsEntradas,matrizEntradaCliente,  cantCompraClientes);
                         }else{
-                            System.out.println("Usuario no Encontrado");
+                            System.out.println("\nUsuario no Encontrado");
                         }
                         
                         break;
                     
                     case 2:
-                        System.out.println("Has seleccionado la opción 1: Salir - Cerrar Sistema");
+                        System.out.println("Has seleccionado la opción 2: Salir - Cerrar Sistema");
                         salir = true;
                         break;
                     default:
@@ -288,7 +274,7 @@ public class Taller_0
             String [] nombrePelicula, boolean [][] funcionMañana, boolean [][] funcionTarde, int [] salas, int [][] sala1M,int [][] sala2M,int [][] sala3M,int [][] sala1T,
             int [][] sala2T,int [][] sala3T,String [] letras, int [] saldo, String [] status, String [] ruts,String [] nombrePeliculas, int cantCompraClientes,String [] rutsEntradas,
             int [] cantEntradas,String [] peliculaClientes, String []  horarioEntradas, int [] salasCompradas, String [][] matrizEntradaCliente,String [] peliculasClientes,
-            int [] salaComprada, String [] rutEntradas){
+            int [] salaComprada, String [] rutEntradas, int cantClientes,int[] cantCompraClientesArray){
         Scanner sn = new Scanner(System.in);
         boolean salir = false;
         int opcion; 
@@ -303,33 +289,36 @@ public class Taller_0
                 opcion = sn.nextInt();
                 switch (opcion) {
                     case 1:
-                        System.out.println("Has seleccionado la opción 1: Comprar Entrada.");
+                        System.out.println("\nHas seleccionado la opción 1: Comprar Entrada.");
                         horarioDisponibleDePelicula ( posCliente, saldos, cantPeliculas,   tipoPelicula, 
              nombrePelicula,  funcionMañana,  funcionTarde,  salas,  sala1M, sala2M, sala3M, sala1T,
             sala2T, sala3T, letras,  saldo,  status, ruts, nombrePeliculas,  cantCompraClientes, rutsEntradas,
-            cantEntradas, peliculaClientes,   horarioEntradas,  salasCompradas,  matrizEntradaCliente );
+            cantEntradas, peliculaClientes,   horarioEntradas,  salasCompradas,  matrizEntradaCliente,  cantCompraClientesArray );
                         
                         break;
                     case 2:
-                        System.out.println("Has seleccionado la opción 1: Información Usuario.");
+                        System.out.println("\nHas seleccionado la opción 2: Información Usuario.");
                         obtenerInformaciónUsuario ( posCliente,  ruts, nombres,  apellidos, saldos,
                         rutEntradas,  cantEntradas,  peliculasClientes,  horarioEntradas,  salaComprada, matrizEntradaCliente,
                          cantCompraClientes);
                         
                         break;
                     case 3:
-                        System.out.println("Has seleccionado la opción 1: Devolución Entrada.");
-                        
+                        System.out.println("\nHas seleccionado la opción 3: Devolución Entrada.");
+                        String rut=ruts[posCliente];
+                        devolucionEntrada( rut,  rutsEntradas, cantEntradas,  peliculaClientes, horarioEntradas, salaComprada,  matrizEntradaCliente,  cantCompraClientes, ruts, cantClientes, saldos,
+                                         peliculasClientes,  letras,  sala1M,  sala2M,  sala3M, sala1T,sala2T, sala3T, salasCompradas);
                         break;
                     case 4:
-                        System.out.println("Has seleccionado la opción 1: Cartelera.");
+                        System.out.println("\nHas seleccionado la opción 4: Cartelera.");
+                        cartelera (cantPeliculas,  funcionMañana,  funcionTarde,  salas, nombrePeliculas);
                         break;
                     case 5:
-                        System.out.println("Has seleccionado la opción 1: Salir.");
+                        System.out.println("\nHas seleccionado la opción 5: Salir.");
                         salir = true;
                         break;
                     default:
-                        System.out.println("Solo números entre 1 y 5");
+                        System.out.println("\nSolo números entre 1 y 5");
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Debes insertar un número");
@@ -356,13 +345,13 @@ public class Taller_0
                 opcion = sn.nextInt();
                 switch (opcion) {
                     case 1:
-                        System.out.println("Has seleccionado la opción 1: Comprar Entrada.");
+                        System.out.println("Has seleccionado la opción 1: Taquilla.");
                         obtenerRecaudacion(cantPeliculas,nombrePeliculas,recaudacionMañana,recaudacionTarde,recaudacionTotal);
                         
                         break;
                     case 2:
-                        System.out.println("Has seleccionado la opción 2: Información Usuario.");
-                        obtenerInformacionUsuario( ruts,  cantClientes,nombres,  apellidos,saldos, cantEntradas,peliculaClientes,  horarioEntradas,  rutsEntradas,matrizEntradaCliente,  cantCompraClientes);
+                        System.out.println("Has seleccionado la opción 2: Información Cliente.");
+                        obtenerInformacionUsuarioAdmin( ruts,  cantClientes,nombres,  apellidos,saldos, cantEntradas,peliculaClientes,  horarioEntradas,  rutsEntradas,matrizEntradaCliente,  cantCompraClientes);
                         
                         break;
                     
@@ -388,10 +377,10 @@ public class Taller_0
     
     public static int verificarRut(String [] ruts, String [] contraseñas, int cantClientes){
         Scanner sc = new Scanner(System.in);
-        System.out.print("Ingrese Rut: ");
+        System.out.print("\nIngrese Rut: ");
         String rutVerificar = sc.next();
         
-        System.out.print("IngreseContraseña: ");
+        System.out.print("\nIngrese Contraseña: ");
         String contraseñaVerificar = sc.next();
         
         
@@ -415,9 +404,9 @@ public class Taller_0
     public static void devolucionEntrada(String rut, String [] rutsEntradas, int [] cantEntradas, String [] peliculaClientes,String [] horarioEntradas, int [] salaComprada, String [][] matrizEntradaCliente, int cantCompraClientes, String[]ruts,int cantClientes,int[]saldos,
                                         String [] peliculaCliente, String [] letras, int [][] sala1M, int [][] sala2M, int [][] sala3M, int [][] sala1T,
                                         int [][] sala2T,int [][] sala3T,int [] salasCompradas){
-        Scanner sc = new Scanner(System.in);
-        System.out.print("Ingrese rut del cliente: ");
-        String rutBuscado = sc.next();
+        
+        
+        String rutBuscado = rut;
         
         int pos = buscarPosCliente( rutBuscado, ruts,  cantClientes);
         
@@ -441,13 +430,13 @@ public class Taller_0
         }
     }
 
-    public static void obtenerInformacionUsuario(String [] ruts, int cantClientes, String[] nombres, String[] apellidos, int[] saldos, 
+    public static void obtenerInformacionUsuarioAdmin(String [] ruts, int cantClientes, String[] nombres, String[] apellidos, int[] saldos, 
             int []cantEntradas, String[] peliculaClientes, String[] horarioEntradas, String[] rutsEntradas,
             String[][]matrizEntradaCliente, int cantCompraClientes) {
         
         int rut=0;
         Scanner sc=new Scanner(System.in);
-        System.out.println("Ingrese el rut a buscar; ");
+        System.out.print("Ingrese el rut a buscar: ");
         String rutBuscado=sc.nextLine();
         int pos=buscarPosCliente(rutBuscado,ruts,cantClientes);
         while(pos==-1){
@@ -630,7 +619,7 @@ public class Taller_0
     public static void horarioDisponibleDePelicula (int posCliente, int []saldos,int cantPeliculas, String [] tipoPelicula, 
             String [] nombrePelicula, boolean [][] funcionMañana, boolean [][] funcionTarde, int [] salas, int [][] sala1M,int [][] sala2M,int [][] sala3M,int [][] sala1T,
             int [][] sala2T,int [][] sala3T,String [] letras, int [] saldo, String [] status, String [] ruts,String [] nombrePeliculas, int cantCompraClientes,String [] rutsEntradas,
-            int [] cantEntradas,String [] peliculaClientes, String []  horarioEntradas, int [] salasCompradas, String [][] matrizEntradaCliente )
+            int [] cantEntradas,String [] peliculaClientes, String []  horarioEntradas, int [] salasCompradas, String [][] matrizEntradaCliente ,int[] cantCompraClientesArray)
     {
         Scanner sc = new Scanner(System.in);
         System.out.println("Ingrese nombre de pelicula a buscar: ");
@@ -696,7 +685,7 @@ public class Taller_0
                     obtenerSalasAsientos ( sala1M,  letras);
                     confirmarCompra(  letras,  posPelicula,  tipoPelicula, saldo,  posCliente, status,
                         ruts,  nombrePeliculas,  opHorario,  sala, sala1M,  cantCompraClientes,  rutsEntradas, cantEntradas,
-                        peliculaClientes,  horarioEntradas,  salasCompradas,  matrizEntradaCliente);
+                        peliculaClientes,  horarioEntradas,  salasCompradas,  matrizEntradaCliente,cantCompraClientesArray);
                     break;
                 case 2:  
                     // int [][] sala2M;;
@@ -704,7 +693,7 @@ public class Taller_0
                     obtenerSalasAsientos ( sala2M,  letras);
                     confirmarCompra(  letras,  posPelicula,  tipoPelicula, saldo,  posCliente, status,
                         ruts,  nombrePeliculas,  opHorario,  sala, sala2M,  cantCompraClientes,  rutsEntradas, cantEntradas,
-                        peliculaClientes,  horarioEntradas,  salasCompradas,  matrizEntradaCliente);
+                        peliculaClientes,  horarioEntradas,  salasCompradas,  matrizEntradaCliente,cantCompraClientesArray);
                     break;
                 case 3:  
                     // int [][] sala3M;;
@@ -712,7 +701,7 @@ public class Taller_0
                     obtenerSalasAsientos ( sala3M,  letras);
                     confirmarCompra(  letras,  posPelicula,  tipoPelicula, saldo,  posCliente, status,
                         ruts,  nombrePeliculas,  opHorario,  sala, sala3M,  cantCompraClientes,  rutsEntradas, cantEntradas,
-                        peliculaClientes,  horarioEntradas,  salasCompradas,  matrizEntradaCliente);
+                        peliculaClientes,  horarioEntradas,  salasCompradas,  matrizEntradaCliente,cantCompraClientesArray);
                     break;
 
                 default: 
@@ -736,7 +725,7 @@ public class Taller_0
                     obtenerSalasAsientos ( sala1T,  letras);
                     confirmarCompra(  letras,  posPelicula,  tipoPelicula, saldo,  posCliente, status,
                         ruts,  nombrePeliculas,  opHorario,  sala, sala1T,  cantCompraClientes,  rutsEntradas, cantEntradas,
-                        peliculaClientes,  horarioEntradas,  salasCompradas,  matrizEntradaCliente);
+                        peliculaClientes,  horarioEntradas,  salasCompradas,  matrizEntradaCliente,cantCompraClientesArray);
                     
                     break;
                 case 2:  
@@ -745,7 +734,7 @@ public class Taller_0
                     obtenerSalasAsientos ( sala2T,  letras);
                     confirmarCompra(  letras,  posPelicula,  tipoPelicula, saldo,  posCliente, status,
                         ruts,  nombrePeliculas,  opHorario,  sala, sala2T,  cantCompraClientes,  rutsEntradas, cantEntradas,
-                        peliculaClientes,  horarioEntradas,  salasCompradas,  matrizEntradaCliente);
+                        peliculaClientes,  horarioEntradas,  salasCompradas,  matrizEntradaCliente,cantCompraClientesArray);
                     break;
                 case 3:  
                     // int [][] sala3T;
@@ -753,7 +742,7 @@ public class Taller_0
                     obtenerSalasAsientos ( sala3T,  letras);
                     confirmarCompra(  letras,  posPelicula,  tipoPelicula, saldo,  posCliente, status,
                         ruts,  nombrePeliculas,  opHorario,  sala, sala3T,  cantCompraClientes,  rutsEntradas, cantEntradas,
-                        peliculaClientes,  horarioEntradas,  salasCompradas,  matrizEntradaCliente);
+                        peliculaClientes,  horarioEntradas,  salasCompradas,  matrizEntradaCliente,cantCompraClientesArray);
                     break;
 
                 default: 
@@ -807,7 +796,7 @@ public class Taller_0
     
     public static void confirmarCompra( String [] letras, int posPelicula, String [] tipoPelicula, int [] saldo, int posCliente, String [] Status,
             String[]ruts, String [] nombrePeliculas, String horario, int salaCompradaFuncion, int [][] matrizSala, int cantCompraClientes, String [] rutsEntradas, int [] cantEntradas,
-            String [] peliculaClientes, String [] horarioEntradas, int [] salasCompradas, String [][] matrizEntradaCliente){
+            String [] peliculaClientes, String [] horarioEntradas, int [] salasCompradas, String [][] matrizEntradaCliente, int [] cantCompraClientesArray){
         
         Scanner sc = new Scanner(System.in);
         
@@ -846,7 +835,7 @@ public class Taller_0
             
         }else{
             buscarPosSala(posCliente, ruts, posPelicula,  nombrePeliculas, horario,   salaCompradaFuncion , cantEntradasAComprar,  matrizSala,
-             letras,  cantCompraClientes, rutsEntradas, cantEntradas, peliculaClientes, horarioEntradas, salasCompradas, matrizEntradaCliente);
+             letras,  cantCompraClientes, rutsEntradas, cantEntradas, peliculaClientes, horarioEntradas, salasCompradas, matrizEntradaCliente, cantCompraClientesArray);
         }
         
         
@@ -861,7 +850,7 @@ public class Taller_0
     }
     
     public static void buscarPosSala(int posCliente, String []ruts,int posPelicula, String [] nombrePeliculas,String horario,  int salaCompradaFuncion ,int cantEntradasAComprar, int [][] matrizSala,
-            String [] letras, int cantCompraClientes,String [] rutsEntradas, int [] cantEntradas,String [] peliculaClientes,String [] horarioEntradas,int [] salasCompradas, String [][] matrizEntradaCliente){
+            String [] letras, int cantCompraClientes,String [] rutsEntradas, int [] cantEntradas,String [] peliculaClientes,String [] horarioEntradas,int [] salasCompradas, String [][] matrizEntradaCliente, int [] cantCompraClientesArray){
         
         Scanner sc = new Scanner(System.in);
         for (int i = 0; i < cantEntradasAComprar; i++) {
@@ -911,6 +900,7 @@ public class Taller_0
                 for (int h = 0; h < cantEntradasAComprar; h++) {
                     matrizEntradaCliente[cantCompraClientes][h] = posSalaFil+","+posSalaCol;
                 }
+                cantCompraClientesArray[0]+=1;
                 
             }
             
@@ -949,4 +939,21 @@ public class Taller_0
     }
     
         
+    public static void cartelera (int cantPeliculas, boolean [][] funcionMañana, boolean [][] funcionTarde, int [] salas,  String [] nombrePeliculas){
+        for (int i = 0; i < cantPeliculas; i++) {
+            System.out.println("La pelicula "+nombrePeliculas[i]+", tiene los siguientes horarios: ");
+            System.out.println("Horarios disponibles en la MAÑANA");
+            for (int j = 0; j < 3; j++) {
+                if (funcionMañana[i][j] = true ){
+                    System.out.println("\t"+funcionMañana[i][j]);
+                }
+            }
+            System.out.println("Horarios disponibles en la TARDE");
+            for (int k = 0; k < 3; k++) {
+                if (funcionTarde[i][k] = true ){
+                    System.out.println("\t"+funcionTarde[i][k]);
+                }
+            }
+        }
+    }
 }
