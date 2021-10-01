@@ -59,6 +59,7 @@ public class Taller_0
         int [][] sala1T = new int [10][31]; optimizarSalas( sala1T);
         int [][] sala2T = new int [10][31]; optimizarSalas( sala2T);
         int [][] sala3T = new int [10][31]; optimizarSalas( sala3T);
+         
         
         
         
@@ -71,14 +72,17 @@ public class Taller_0
         
         
     }
-    
+    /** 
+     * This procedure fills the rooms, optimizes them to know which seat is available for purchase, which seat is restricted by sanitary measures and the seats that are not available in the movie theater
+     * @param sala1M this parameter is the input of a matrix which represents a movie theater to optimize its seats
+     */
     public static void optimizarSalas(int [][] sala1M){
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 6; j++) {
                 sala1M[i][j] = -1;
             }
         }
-        
+    
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j <=30; j++) {
                 if(j>25){
@@ -119,7 +123,16 @@ public class Taller_0
             }
         }
     }
-    
+    /**
+    * This function reads the file "clientes.txt" and fills in the lists of the cinema's customer data (name, Rut, surname, password and balance) and returns the variable cantClientes
+     * @param nombres enter a list of String and fill it with the names of each user
+     * @param apellidos enter a String list and fill it with the surnames of each user
+     * @param ruts enter a list of String and fill it with the Ruts of each user
+     * @param contraseñas enter a list of String and fill it with each password of each user
+     * @param saldos enter a list of int and populate it with the balances of each user
+     * @return returns the number of customers registered in the system
+     * @throws IOException This exception is necessary to be able to read the "clientes.txt" file
+     */
     public static int lecturaClientes(String [] nombres, String [] apellidos, String[]ruts, String [] contraseñas, int [] saldos) throws IOException 
     {
         Scanner sc = new Scanner(new File("clientes.txt"));
@@ -150,6 +163,13 @@ public class Taller_0
         return cantClientes;
     }
     
+    /**
+     * This procedure reads the file "status.txt" in order to fill out a list and know if the customer has his mobility pass or does not have it in his possession, in this procedure the "buscarPosCliente" function is called to know his location in a list
+     * @param ruts enter a list of String and fill it with the Ruts of each user
+     * @param status Enter this list of String and it is filled by this procedure with the data of the mobility pass of each client
+     * @param cantClientes enter this int to be able to know the number of clients that exist in the system
+     * @throws IOException This exception is necessary to be able to read the "status.txt" file
+     */
     public static void lecturaStados (String [] ruts, String [] status, int cantClientes) throws IOException
     {
         Scanner sc = new Scanner(new File("status.txt"));        
@@ -173,7 +193,17 @@ public class Taller_0
     }
     
     
-    
+    /**
+     * This function reads the file "peliculas.txt", fills in the lists of (tipoPeliculas, nombrePeliculas, recaudacionTotal, funcionesMañana, functionsTarde) and returns the number of movies on the billboard, this function calls the process "ingresarFuncion"
+     * @param tipoPeliculas list of type String that stores the type of movie that is in theaters (released / premiere)
+     * @param nombrePeliculas String type list that stores the name of each movie on the billboard
+     * @param recaudacionTotal lista de tipo int que alamcena la recaudacion de cada pelicula hasta el momento
+     * @param salas list of numbered rooms (1,2,3)
+     * @param funcionesMañana enter a boolean matrix to fill in the functions of each movie in the "morning" schedule
+     * @param funcionesTarde enter a boolean matrix to fill in the functions of each movie in the "afternoon" schedule
+     * @return retorna an int with which represents the number of movies on the billboard
+     * @throws IOException This exception is necessary to be able to read the "peliculas.txt" file
+     */
     public static int lecturaPeliculas (String [] tipoPeliculas,String [] nombrePeliculas,int [] recaudacionTotal,int [] salas, boolean [][] funcionesMañana, boolean [][] funcionesTarde) throws IOException 
     {
         Scanner sc = new Scanner(new File("peliculas.txt"));
@@ -205,7 +235,15 @@ public class Taller_0
         return cantPeliculas;
         
     }
-    
+    /**
+     * This procedure is called from the "lecturaPeliculas" function to fill the billboard with their respective functions on the billboard.
+     * @param horario enter a String that can have an "M" value or a "T" value to know the time of the respective movie.
+     * @param sala enter an int with the number of the room in which the function of the movie will be given
+     * @param salas list of numbered rooms (1,2,3)
+     * @param funcionesMañana enter a boolean matrix to fill in the functions of each movie in the "morning" schedule
+     * @param funcionesTarde enter a boolean matrix to fill in the functions of each movie in the "afternoon" schedule
+     * @param cantPeliculas enter the number of movies on the billboard
+     */
     public static void ingresarFuncion (String horario, int sala,int [] salas, boolean [][] funcionesMañana, boolean [][] funcionesTarde, int cantPeliculas)
     {
         int salaN = 0;
@@ -223,7 +261,43 @@ public class Taller_0
         
         
     }
-    
+    /**
+     * This procedure is used to start the cinema system. In this procedure enter the functions of: "posCliente", "verificarRut", "menuCliente" and "menuAdmin", so that the system works correctly
+     * @param saldo enter this list of type int to later be called from the function "menuCliente" and "menuAdmin"
+     * @param cantPeliculas enter the number of movies on the billboard
+     * @param tipoPelicula enter a list of type String containing the type (premiere / released) of each movie
+     * @param nombres enter a list of String and fill it with the names of each user
+     * @param apellidos enter a String list and fill it with the surnames of each use
+     * @param contraseñas enter a list of String and fill it with each password of each user
+     * @param cantClientes enter this int to be able to know the number of clients that exist in the system
+     * @param nombrePelicula enter a list of type String containing the name of each movie
+     * @param funcionMañana enter an array of type boolean with the functions in the morning time
+     * @param funcionTarde enter a boolean array with the functions in the afternoon schedule
+     * @param salas list of numbered rooms (1,2,3)
+     * @param sala1M ingresa una matriz  con la sala 1 en el horario de mañana con los asientos de la sala
+     * @param sala2M ingresa una matriz  con la sala 2 en el horario de mañana con los asientos de la sala
+     * @param sala3M ingresa una matriz  con la sala 3 en el horario de mañana con los asientos de la sala
+     * @param sala1T ingresa una matriz  con la sala 1 en el horario de tarde con los asientos de la sala
+     * @param sala2T ingresa una matriz  con la sala 2 en el horario de tarde con los asientos de la sala
+     * @param sala3T ingresa una matriz  con la sala 3 en el horario de tarde con los asientos de la sala
+     * @param letras enter a list of type String with the letters of the seats
+     * @param status Enter this list of String and it is filled by this procedure with the data of the mobility pass of each client
+     * @param ruts enter a list of String and fill it with the Ruts of each user
+     * @param cantCompraClientes enter a variable of type int with the amount of purchases that have been made
+     * @param rutsEntradas enter a list of type String with the ruts that have bought at least one entry
+     * @param cantEntradas enter a list of type int with the amount of tickets they have bought
+     * @param peliculaClientes enter a list of type String with the movies that customers have bought
+     * @param horarioEntradas enter a list of type String with the schedules that customers have bought
+     * @param salasCompradas enter a list of type int with the room that each client has bought
+     * @param matrizEntradaCliente enter an array of type String with the seats that each customer bought
+     * @param peliculasClientes enter a list of type String containing the movies purchased by customers
+     * @param salaComprada enter a list of type int with the room that the customer has bought
+     * @param rutEntradas enter a list of type String with the ruts that have bought at least one entry 
+     * @param recaudacionMañana enter a list type int that contains the collection for the time of "tomorrow"
+     * @param recaudacionTarde enter a list type int that contains the collection for the "afternoon" schedule
+     * @param recaudacionTotal list of type int that stores the collection of each movie so far
+     * @param cantCompraClientesArray enter a list of type int containing the purchase quantity of the customers
+     */
     public static void sistema ( int []saldo,int cantPeliculas, String [] tipoPelicula,String [] nombres, String [] apellidos, String [] contraseñas, int cantClientes,
             String [] nombrePelicula, boolean [][] funcionMañana, boolean [][] funcionTarde, int [] salas, int [][] sala1M,int [][] sala2M,int [][] sala3M,int [][] sala1T,
             int [][] sala2T,int [][] sala3T,String [] letras, String [] status, String [] ruts, int cantCompraClientes,String [] rutsEntradas,
@@ -273,7 +347,42 @@ public class Taller_0
         }
         while (!salir) ;
     }
-    
+    /**
+     * This procedure is for the purchase of tickets for each client, the information of each user, the return of tickets and for the billboard sample.
+     * @param posCliente enter the position of the customer to be searched in the list of ruts
+     * @param nombres enter a list of String and fill it with the names of each user
+     * @param apellidos enter a String list and fill it with the surnames of each use
+     * @param saldos enter a list of int and populate it with the balances of each user
+     * @param cantPeliculas enter the number of movies on the billboard
+     * @param tipoPelicula enter a list of type String containing the type (premiere / released) of each movie
+     * @param nombrePelicula enter a list of type String containing the name of each movie
+     * @param funcionMañana enter an array of type boolean with the functions in the morning time
+     * @param funcionTarde enter a boolean array with the functions in the afternoon schedule
+     * @param salas list of numbered rooms (1,2,3)
+     * @param sala1M enter a matrix with room 1 in the morning schedule with room seats
+     * @param sala2M enter a matrix with room 2 in the morning schedule with room seats
+     * @param sala3M enter a matrix with room 3 in the morning schedule with room seats
+     * @param sala1T enter a matrix with room 1 in the afternoon with the room seats
+     * @param sala2T enter a matrix with room 2 in the afternoon with the room seats
+     * @param sala3T enter a matrix with room 3 in the afternoon with the room seats
+     * @param letras enter a list of type String with the letters of the seats
+     * @param saldo enter a list of type int with the balances of each customer
+     * @param status Enter this list of String and it is filled by this procedure with the data of the mobility pass of each client
+     * @param ruts enter a list of String and fill it with the Ruts of each user     
+     * @param nombrePeliculas enter a list of type String with the name of each movie
+     * @param cantCompraClientes enter a variable of type int with the amount of purchases that have been made
+     * @param rutsEntradas enter a list of type String with the ruts that have bought at least one entry
+     * @param cantEntradas enter a list of type int with the amount of tickets they have bought
+     * @param peliculaClientes enter a list of type String with the movies that customers have bought
+     * @param horarioEntradas enter a list of type String with the schedules that customers have bought
+     * @param salasCompradas enter a list of type int with the room in which each client bought
+     * @param matrizEntradaCliente enter an array of type String with the seats that each customer bought
+     * @param peliculasClientes enter a list of type String containing the movies purchased by customers
+     * @param salaComprada enter a list of type int with the room that the customer has bought
+     * @param rutEntradas enter a list of type String with the ruts that have bought at least one entry
+     * @param cantClientes enter this int to be able to know the number of clients that exist in the system
+     * @param cantCompraClientesArray  enter a list of type int containing the purchase quantity of the customers
+     */
     public static void menuCliente(int posCliente, String [] nombres, String[] apellidos,int []saldos,int cantPeliculas, String [] tipoPelicula, 
             String [] nombrePelicula, boolean [][] funcionMañana, boolean [][] funcionTarde, int [] salas, int [][] sala1M,int [][] sala2M,int [][] sala3M,int [][] sala1T,
             int [][] sala2T,int [][] sala3T,String [] letras, int [] saldo, String [] status, String [] ruts,String [] nombrePeliculas, int cantCompraClientes,String [] rutsEntradas,
@@ -331,7 +440,25 @@ public class Taller_0
         }
         while (!salir) ;
     }
-    
+        /**
+     * procedure that is called from "menuCliente" administrator option that displays "taquilla" and "informacionCliente" options     
+     * @param cantPeliculas enter the number of movies on the billboard
+     * @param nombrePeliculas String type list that stores the name of each movie on the billboard
+     * @param recaudacionMañana enter a list type int that contains the collection for the time of "tomorrow"
+     * @param recaudacionTarde enter a list type int that contains the collection for the "afternoon" schedule
+     * @param recaudacionTotal list of type int that stores the collection of each movie so far
+     * @param ruts enter a list of String and fill it with the Ruts of each user
+     * @param cantClientes enter this int to be able to know the number of clients that exist in the system
+     * @param nombres enter a list of String and fill it with the names of each user
+     * @param apellidos enter a String list and fill it with the surnames of each use
+     * @param saldos enter a list of int and populate it with the balances of each user
+     * @param cantEntradas enter a list of type int with the amount of tickets they have bought
+     * @param peliculaClientes enter a list of type String with the movies that customers have bought
+     * @param horarioEntradas enter a list of type int with the room that each client has bought
+     * @param rutsEntradas enter a list of type String with the ruts that have bought at least one entry
+     * @param matrizEntradaCliente enter an array of type String with the seats that each customer bought
+     * @param cantCompraClientes enter a variable of type int with the amount of purchases that have been made
+     */
         public static void menuAdmin(int cantPeliculas, String[]nombrePeliculas,int [] recaudacionMañana,int [] recaudacionTarde,int [] recaudacionTotal, 
             String [] ruts, int cantClientes, String[] nombres, String[] apellidos, int[] saldos, int []cantEntradas, String[] peliculaClientes,
             String[] horarioEntradas,String[] rutsEntradas,String[][]matrizEntradaCliente, int cantCompraClientes){
@@ -378,7 +505,13 @@ public class Taller_0
         
         
     }
-    
+    /**
+     * Function that verifies if the entered routine is correct with your password, and in case of choosing the administrator menu
+     * @param ruts enter a list of String and fill it with the Ruts of each user
+     * @param contraseñas enter a list of String and fill it with each password of each user
+     * @param cantClientes enter this int to be able to know the number of clients that exist in the system
+     * @return reotrna la variable "dev" en caso de ser distinto de -1 y 2 en rut es correcto, en caso de tener valor 2 es administrador y en caso de ser -1 el rut no es valido
+     */
     public static int verificarRut(String [] ruts, String [] contraseñas, int cantClientes){
         Scanner sc = new Scanner(System.in);
         System.out.print("\nIngrese Rut: ");
@@ -404,7 +537,30 @@ public class Taller_0
         }
         return dev;
     }
-    
+    /**
+     * procedure for the option of returning tickets purchased by a customer
+     * @param rut input of variable of type String which represents the client's routine that wants to return the inputs
+     * @param rutsEntradas enter a list of type String with the ruts that have bought at least one entry
+     * @param cantEntradas enter a list of type int with the amount of tickets they have bought
+     * @param peliculaClientes enter a list of type String with the movies that customers have bought
+     * @param horarioEntradas enter a list of type String with the schedules that customers have bought
+     * @param salaComprada enter a list of type int with the room that the customer has bought
+     * @param matrizEntradaCliente enter an array of type String with the seats that each customer bought
+     * @param cantCompraClientes enter a variable of type int with the amount of purchases that have been made
+     * @param ruts enter a list of String and fill it with the Ruts of each user
+     * @param cantClientes enter this int to be able to know the number of clients that exist in the system
+     * @param saldos enter a list of int and populate it with the balances of each user
+     * @param peliculaCliente ingreso de lista de tipo String con la pelicula compradada de cada cliente
+     * @param letras enter a list of type String with the letters of the seats
+     * @param sala1M enter a matrix with room 1 in the morning schedule with room seats
+     * @param sala2M enter a matrix with room 2 in the morning schedule with room seats
+     * @param sala3M enter a matrix with room 3 in the morning schedule with room seats     
+     * @param sala1T enter a matrix with room 1 in the afternoon with the room seats
+     * @param sala2T enter a matrix with room 2 in the afternoon with the room seats
+     * @param sala3T enter a matrix with room 3 in the afternoon with the room seats
+     * @param salasCompradas enter a list of type int with the room in which each client bought
+     * @param cantCompraClientesArray enter a list of type int containing the purchase quantity of the customers
+     */
     public static void devolucionEntrada(String rut, String [] rutsEntradas, int [] cantEntradas, String [] peliculaClientes,String [] horarioEntradas, int [] salaComprada, String [][] matrizEntradaCliente, int cantCompraClientes, String[]ruts,int cantClientes,int[]saldos,
                                         String [] peliculaCliente, String [] letras, int [][] sala1M, int [][] sala2M, int [][] sala3M, int [][] sala1T,
                                         int [][] sala2T,int [][] sala3T,int [] salasCompradas, int [] cantCompraClientesArray){
@@ -421,7 +577,14 @@ public class Taller_0
     }
     
 
-
+    /**
+     * procedure that prints the different types of collections
+     * @param cantPeliculas enter the number of movies on the billboard
+     * @param nombrePeliculas String type list that stores the name of each movie on the billboard
+     * @param recaudacionMañana enter a list type int that contains the collection for the time of "tomorrow"
+     * @param recaudacionTarde enter a list type int that contains the collection for the "afternoon" schedule
+     * @param recaudacionTotal  list of type int that stores the collection of each movie so far
+     */
     public static void obtenerRecaudacion(int cantPeliculas, String[]nombrePeliculas,int [] recaudacionMañana,int [] recaudacionTarde,int [] recaudacionTotal) {
         for(int i=0;i<cantPeliculas;i++){
             int total=0;
@@ -432,7 +595,20 @@ public class Taller_0
             System.out.println("\tEl monto recaudado en el horario de tarde es de: "+recaudacionTarde[i]+" pesos");
         }
     }
-
+    /**
+     * procedure used to obtain the information of each user and print it
+     * @param ruts enter a list of String and fill it with the Ruts of each user
+     * @param cantClientes enter this int to be able to know the number of clients that exist in the system
+     * @param nombres enter a list of String and fill it with the names of each user
+     * @param apellidos enter a String list and fill it with the surnames of each use
+     * @param saldos enter a list of int and populate it with the balances of each user
+     * @param cantEntradas enter a list of type int with the amount of tickets they have bought
+     * @param peliculaClientes enter a list of type String with the movies that customers have bought
+     * @param horarioEntradas enter a list of type String with the schedules that customers have bought
+     * @param rutsEntradas enter a list of type String with the ruts that have bought at least one entry
+     * @param matrizEntradaCliente enter an array of type String with the seats that each customer bought
+     * @param cantCompraClientes enter a variable of type int with the amount of purchases that have been made
+     */
     public static void obtenerInformacionUsuarioAdmin(String [] ruts, int cantClientes, String[] nombres, String[] apellidos, int[] saldos, 
             int []cantEntradas, String[] peliculaClientes, String[] horarioEntradas, String[] rutsEntradas,
             String[][]matrizEntradaCliente, int cantCompraClientes) {
@@ -477,7 +653,13 @@ public class Taller_0
         
          
     }
-
+    /**
+     * function that looks for a client in a list, in this case the list of ruts
+     * @param rutBuscado enter variable of type String which is the Rut to search
+     * @param ruts enter a list of String and fill it with the Ruts of each user
+     * @param cantClientes enter this int to be able to know the number of clients that exist in the system
+     * @return retorna the position of the rut in case of being found, in case of not being found returns -1
+     */
     public static int buscarPosCliente(String rutBuscado, String [] ruts, int cantClientes) {
         int pos=-1;
         
@@ -490,7 +672,28 @@ public class Taller_0
         return pos;
     }
     
-    
+    /**
+     * procedure that prints the movie (s) purchased by the customer, the number of tickets, the time of entry, the room purchased, the seats purchased and reimburses the tickets if necessary
+     * @param rutBuscado enter variable of type String which is the Rut to search
+     * @param peliculaClientes enter a list of type String with the movies that customers have bought
+     * @param cantCompraClientes enter a variable of type int with the amount of purchases that have been made
+     * @param pos variable of type int that contains the position of the rut that has been searched
+     * @param peliculaCliente Entering a list of type String with the purchased movie of each client
+     * @param horarioEntradas enter a list of type String with the schedules that customers have bought
+     * @param salaComprada enter a list of type int with the room that the customer has bought
+     * @param matrizEntradaCliente enter an array of type String with the seats that each customer bought
+     * @param cantEntradas enter a list of type int with the amount of tickets they have bought
+     * @param rutsEntradas enter a list of type String with the ruts that have bought at least one entry
+     * @param saldos enter a list of int and populate it with the balances of each user
+     * @param letras enter a list of type String with the letters of the seats     * @param sala1M enter a matrix with room 1 in the morning schedule with room seats
+     * @param sala2M enter a matrix with room 2 in the morning schedule with room seats
+     * @param sala3M enter a matrix with room 3 in the morning schedule with room seats
+     * @param sala1T enter a matrix with room 1 in the afternoon with the room seats
+     * @param sala2T enter a matrix with room 2 in the afternoon with the room seats
+     * @param sala3T enter a matrix with room 3 in the afternoon with the room seats
+     * @param salasCompradas enter a list of type int with the room in which each client bought
+     * @param cantCompraClientesArray enter a list of type int containing the purchase quantity of the customers
+     */
     public static void obtenerEntradasUsuario(String rutBuscado,String[]peliculaClientes,int cantCompraClientes,int pos,
             String[]peliculaCliente,String[]horarioEntradas, int[]salaComprada, String [][] matrizEntradaCliente, int [] cantEntradas,String[] rutsEntradas,
             int [] saldos, String [] letras,int [][] sala1M,int [][] sala2M,int [][] sala3M,int [][] sala1T, int [][] sala2T,int [][] sala3T,int [] salasCompradas, int []cantCompraClientesArray) {
@@ -522,30 +725,32 @@ public class Taller_0
             }
         }
         
-        
-        
-        /*
-        for (int i = 0; i < 10; i++) {
-            if(!rutsEntradas[i].equalsIgnoreCase(rutBuscado) && !peliculaCliente[i].equalsIgnoreCase(peliculaReembolso)){
-                
-            }
-        }
-        
-        int posPelicula=-1;
-        while(posPelicula<=cantCompraClientes-1 && !rutBuscado.equals(rutsEntradas[posPelicula])){
-                    posPelicula++;
-        }
-        if(pos == cantCompraClientes){
-            posPelicula=  -1;
-        }
-        */
         opDevolucion(cantEntradas, posPelicula, posClienteCompras, saldos, matrizEntradaCliente,  sala1M, sala2M,sala3M, sala1T,
              sala2T, sala3T,  horarioEntradas, salasCompradas,  letras, cantCompraClientesArray, rutsEntradas, peliculaCliente);
         
         
         
     }
-
+    /**
+     * procedure that fulfills the function of making the return of tickets and refund of money
+     * @param cantEntradas enter a list of type int with the amount of tickets they have bought
+     * @param posPelicula position of the purchased movie in a list
+     * @param posClienteCompras posicion del cliente que ha comprado la entrada en una lista 
+     * @param saldos enter a list of int and populate it with the balances of each user
+     * @param matrizEntradaCliente enter an array of type String with the seats that each customer bought
+     * @param sala1M enter a matrix with room 1 in the morning schedule with room seats
+     * @param sala2M enter a matrix with room 2 in the morning schedule with room seats
+     * @param sala3M enter a matrix with room 3 in the morning schedule with room seats
+     * @param sala1T enter a matrix with room 1 in the afternoon with the room seats
+     * @param sala2T enter a matrix with room 2 in the afternoon with the room seats
+     * @param sala3T enter a matrix with room 3 in the afternoon with the room seats
+     * @param horarioEntradas enter a list of type String with the schedules that customers have bought
+     * @param salasCompradas enter a list of type int with the room in which each client bought
+     * @param letras enter a list of type String with the letters of the seats
+     * @param cantCompraClientesArray enter a list of type int containing the purchase quantity of the customers
+     * @param rutsEntradas enter a list of type String with the ruts that have bought at least one entry
+     * @param peliculasClientes enter a list of type String containing the movies purchased by customers
+     */
     public static void opDevolucion(int []cantEntradas,int posPelicula,int posClienteCompras, int[]saldos, String [][] matrizEntradaCliente,  int [][] sala1M,int [][] sala2M,int [][] sala3M,int [][] sala1T,
             int [][] sala2T,int [][] sala3T, String []  horarioEntradas, int [] salasCompradas, String [] letras,int []cantCompraClientesArray,String [] rutsEntradas, String [] peliculasClientes) {
         Scanner sc = new Scanner(System.in);
@@ -648,7 +853,13 @@ public class Taller_0
         
     }
     
-    
+    /**
+     * procedure that performs the vacating of a seat after the refund of a ticket
+     * @param sala input array of type int containing the room in which the input was purchased
+     * @param fil input of variable of type String that contains the letters of the seat
+     * @param col input of a variable of type int with the seat number
+     * @param letras enter a list of type String with the letters of the seats
+     */
     public static void devolucionButaca(int [][] sala, String fil, int col,String [] letras){
         int posFil = 0;
         for (int i = 0; i < 10; i++) {
@@ -660,7 +871,36 @@ public class Taller_0
         sala[posFil][col-1] = 0;
         
     }
-    
+    /**
+     * procedure where you enter the movie to search and print the billboard where the available times appear
+     * @param posCliente enter the position of the customer to be searched in the list of ruts
+     * @param saldos enter a list of int and populate it with the balances of each user
+     * @param cantPeliculas enter the number of movies on the billboard
+     * @param tipoPelicula enter a list of type String containing the type (premiere / released) of each movie
+     * @param nombrePelicula enter a list of type String containing the name of each movie
+     * @param funcionMañana enter an array of type boolean with the functions in the morning time
+     * @param funcionTarde enter a boolean array with the functions in the afternoon schedule
+     * @param salas list of numbered rooms (1,2,3)
+     * @param sala1M enter a matrix with room 1 in the morning schedule with room seats
+     * @param sala2M enter a matrix with room 2 in the morning schedule with room seats
+     * @param sala3M enter a matrix with room 3 in the morning schedule with room seats
+     * @param sala1T enter a matrix with room 1 in the afternoon with the room seats
+     * @param sala2T enter a matrix with room 2 in the afternoon with the room seats
+     * @param sala3T enter a matrix with room 3 in the afternoon with the room seats
+     * @param letras enter a list of type String with the letters of the seats
+     * @param saldo enter a list of type int with the balances of each customer
+     * @param status Enter this list of String and it is filled by this procedure with the data of the mobility pass of each client
+     * @param ruts enter a list of String and fill it with the Ruts of each user
+     * @param nombrePeliculas String type list that stores the name of each movie on the billboard
+     * @param cantCompraClientes enter a variable of type int with the amount of purchases that have been made
+     * @param rutsEntradas enter a list of type String with the ruts that have bought at least one entry
+     * @param cantEntradas enter a list of type int with the amount of tickets they have bought
+     * @param peliculaClientes enter a list of type String with the movies that customers have bought
+     * @param horarioEntradas enter a list of type String with the schedules that customers have bought
+     * @param salasCompradas enter a list of type int with the room in which each client bought
+     * @param matrizEntradaCliente enter an array of type String with the seats that each customer bought
+     * @param cantCompraClientesArray enter a list of type int containing the purchase quantity of the customers
+     */
     public static void horarioDisponibleDePelicula (int posCliente, int []saldos,int cantPeliculas, String [] tipoPelicula, 
             String [] nombrePelicula, boolean [][] funcionMañana, boolean [][] funcionTarde, int [] salas, int [][] sala1M,int [][] sala2M,int [][] sala3M,int [][] sala1T,
             int [][] sala2T,int [][] sala3T,String [] letras, int [] saldo, String [] status, String [] ruts,String [] nombrePeliculas, int cantCompraClientes,String [] rutsEntradas,
@@ -794,7 +1034,11 @@ public class Taller_0
             
         }
     }
-    
+    /**
+     * procedure where the seats of the requested room are printed
+     * @param sala1M matrix entry corresponding to seats in a room
+     * @param letras enter a list of type String with the letters of the seats
+     */
     public static void obtenerSalasAsientos (int [][] sala1M, String [] letras){
         System.out.print ("\n");
         for (int i = 1; i < 31; i++) {
@@ -834,7 +1078,29 @@ public class Taller_0
            
         }
     }
-    
+    /**
+     * procedure where the client makes the purchase of their tickets, and all the procedures that this entails
+     * @param letras  enter a list of type String with the letters of the seats
+     * @param posPelicula position of the purchased movie in a list
+     * @param tipoPelicula enter a list of type String containing the type (premiere / released) of each movie
+     * @param saldo enter a list of type int with the balances of each customer
+     * @param posCliente enter the position of the customer to be searched in the list of ruts
+     * @param Status Enter this list of String and it is filled by this procedure with the data of the mobility pass of each client
+     * @param ruts enter a list of String and fill it with the Ruts of each user
+     * @param nombrePeliculas String type list that stores the name of each movie on the billboard
+     * @param horario enter a String that can have an "M" value or a "T" value to know the time of the respective movie.
+     * @param salaCompradaFuncion variable de tipo int que contiene la sala comprada
+     * @param matrizSala ingreso de matriz de tipo int que contiene la sala
+     * @param cantCompraClientes enter a variable of type int with the amount of purchases that have been made
+     * @param rutsEntradas enter a list of type String with the ruts that have bought at least one entry
+     * @param cantEntradas enter a list of type int with the amount of tickets they have bought
+     * @param peliculaClientes enter a list of type String with the movies that customers have bought
+     * @param horarioEntradas enter a list of type String with the schedules that customers have bought
+     * @param salasCompradas enter a list of type int with the room in which each client bought
+     * @param matrizEntradaCliente enter an array of type String with the seats that each customer bought
+     * @param cantCompraClientesArray enter a list of type int containing the purchase quantity of the customers
+     * @param saldos enter a list of int and populate it with the balances of each user
+     */
     public static void confirmarCompra( String [] letras, int posPelicula, String [] tipoPelicula, int [] saldo, int posCliente, String [] Status,
             String[]ruts, String [] nombrePeliculas, String horario, int salaCompradaFuncion, int [][] matrizSala, int cantCompraClientes, String [] rutsEntradas, int [] cantEntradas,
             String [] peliculaClientes, String [] horarioEntradas, int [] salasCompradas, String [][] matrizEntradaCliente, int [] cantCompraClientesArray, int [] saldos){
@@ -885,7 +1151,11 @@ public class Taller_0
         
         
     }
-    
+    /**
+     * procedure used to charge balance to a customer's account in case their balance is insufficient for the purchase
+     * @param posCliente enter the position of the customer to be searched in the list of ruts
+     * @param saldo enter a list of type int with the balances of each customer
+     */
     public static void cargarSaldo (int posCliente, int [] saldo){
         Scanner sc = new Scanner(System.in);
         System.out.print("Ingrese cantidad de dinero a ingresar: ");
@@ -893,7 +1163,28 @@ public class Taller_0
         
         saldo[posCliente] = saldoAgregar;
     }
-    
+    /**
+     * procedure that looks for the position of a seat for the purchase of a ticket, restricts the seats on each side due to the sanitary restriction
+     * @param posCliente enter the position of the customer to be searched in the list of ruts
+     * @param ruts enter a list of String and fill it with the Ruts of each user
+     * @param posPelicula position of the purchased movie in a list
+     * @param nombrePeliculas String type list that stores the name of each movie on the billboard
+     * @param horario enter a String that can have an "M" value or a "T" value to know the time of the respective movie.
+     * @param salaCompradaFuncion variable de tipo int que contiene la sala comprada
+     * @param cantEntradasAComprar input of variable of type int that contains the number of inputs that the customer will buy
+     * @param matrizSala input array of type int containing room
+     * @param letras enter a list of type String with the letters of the seats
+     * @param cantCompraClientes enter a variable of type int with the amount of purchases that have been made
+     * @param rutsEntradas enter a list of type String with the ruts that have bought at least one entry
+     * @param cantEntradas enter a list of type int with the amount of tickets they have bought
+     * @param peliculaClientes enter a list of type String with the movies that customers have bought
+     * @param horarioEntradas enter a list of type String with the schedules that customers have bought
+     * @param salasCompradas enter a list of type int with the room in which each client bought
+     * @param matrizEntradaCliente enter an array of type String with the seats that each customer bought
+     * @param cantCompraClientesArray enter a list of type int containing the purchase quantity of the customers
+     * @param cobro variable of type int that shows the collection of the tickets purchased by the client
+     * @param saldos enter a list of int and populate it with the balances of each user
+     */
     public static void buscarPosSala(int posCliente, String []ruts,int posPelicula, String [] nombrePeliculas,String horario,  int salaCompradaFuncion ,int cantEntradasAComprar, int [][] matrizSala,
             String [] letras, int cantCompraClientes,String [] rutsEntradas, int [] cantEntradas,String [] peliculaClientes,String [] horarioEntradas,int [] salasCompradas, String [][] matrizEntradaCliente, int [] cantCompraClientesArray, int cobro, int [] saldos){
         
@@ -965,7 +1256,21 @@ public class Taller_0
         
     }
     
-    
+    /**
+     * procedure that prints the information of each user (name, surname, routine, balance, purchased movie, entry time, seats)
+     * @param posCliente enter the position of the customer to be searched in the list of ruts
+     * @param ruts enter a list of String and fill it with the Ruts of each user
+     * @param nombres enter a list of String and fill it with the names of each user
+     * @param apellidos enter a String list and fill it with the surnames of each use
+     * @param saldos enter a list of int and populate it with the balances of each user
+     * @param rutEntradas enter a list of type String with the ruts that have bought at least one entry
+     * @param cantEntradas enter a list of type int with the amount of tickets they have bought
+     * @param peliculasClientes enter a list of type String containing the movies purchased by customers
+     * @param horarioEntradas enter a list of type String with the schedules that customers have bought
+     * @param salaComprada enter a list of type int with the room that the customer has bought
+     * @param matrizEntradaCliente enter an array of type String with the seats that each customer bought
+     * @param cantCompraClientes enter a variable of type int with the amount of purchases that have been made
+     */
     public static void obtenerInformaciónUsuario (int posCliente, String [] ruts, String [] nombres, String [] apellidos, int [] saldos,
         String [] rutEntradas, int [] cantEntradas, String [] peliculasClientes, String [] horarioEntradas, int [] salaComprada,String [][] matrizEntradaCliente,
         int [] cantCompraClientes){
@@ -994,7 +1299,14 @@ public class Taller_0
         }
     }
     
-        
+    /**
+     * procedure that displays the billboard of available films
+     * @param cantPeliculas enter the number of movies on the billboard
+     * @param funcionMañana enter an array of type boolean with the functions in the morning time
+     * @param funcionTarde enter a boolean array with the functions in the afternoon schedule
+     * @param salas list of numbered rooms (1,2,3)
+     * @param nombrePeliculas String type list that stores the name of each movie on the billboard
+     */    
     public static void cartelera (int cantPeliculas, boolean [][] funcionMañana, boolean [][] funcionTarde, int [] salas,  String [] nombrePeliculas){
         
         for (int i = 0; i < cantPeliculas; i++) {
